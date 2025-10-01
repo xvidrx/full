@@ -201,9 +201,9 @@
     }
 
     // Обновление времени и прогресса
-    function updateTime(seconds) {
-      timeDisplay.textContent = `${formatTime(seconds)} / ${formatTime(totalDuration)}`;
-      const progressWidth = (seconds / totalDuration) * 100;
+    function updateTime() {
+      timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(totalDuration)}`;
+      const progressWidth = (currentTime / totalDuration) * 100;
       progress.style.width = `${progressWidth}%`;
     }
 
@@ -212,7 +212,7 @@
       interval = setInterval(() => {
         if (currentTime < totalDuration) {
           currentTime++;
-          updateTime(currentTime);
+          updateTime();
         } else {
           stopProgress();
         }
@@ -237,7 +237,7 @@
     });
 
     // Отображаем случайное время при загрузке
-    updateTime(0); // Начальное время = 0
+    updateTime(); // Начальное время = 0
   </script>
 
 </body>
