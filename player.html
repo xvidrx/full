@@ -35,14 +35,27 @@
 
     /* modal */
     .modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+      display: flex;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); /* более прозрачная подложка */
+      align-items: center; justify-content: center;
       z-index: 1000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.5s ease;
     }
-    .modal.show { display: flex; }
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
     .modal-content {
-      background: #222; color: #fff; padding: 20px;
+      background: rgba(34,34,34,0.2); /* полупрозрачный фон без размытия */
+      color: #fff; padding: 20px;
       border-radius: 10px; text-align: center; max-width: 400px;
+      transform: translateY(-20px);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    .modal.show .modal-content {
+      transform: translateY(0);
     }
     .modal-content .icon { font-size: 50px; margin-bottom: 15px; }
     .modal-buttons { margin-top: 20px; display: flex; justify-content: center; }
