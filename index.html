@@ -1,160 +1,416 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Full Video</title>
-<style>
-/* Google Translate */
-.goog-te-banner-frame.skiptranslate,
-.goog-te-gadget-icon,
-#goog-gt-tt,
-.goog-te-balloon-frame,
-.goog-te-menu-frame { display: none !important; }
-body > .skiptranslate { display: none !important; }
-
-/* Body */
-body {
-  margin: 0; background: #000;
-  display: flex; align-items: center; justify-content: center;
-  height: 100vh; font-family: Arial, sans-serif;
-  color: #fff; overflow-x: hidden;
-}
-
-/* Player */
-.player {
-  position: relative;
-  width: 90vw; max-width: 900px;
-  aspect-ratio: 16/9;
-  background: #000 url("ai_bot.png") center/cover no-repeat;
-  overflow: hidden; border-radius: 10px;
-  cursor: pointer;
-}
-.controls {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex; align-items: center;
-  padding: 8px; gap: 10px; font-size: 14px; color: #fff;
-}
-.btn { cursor: pointer; display: flex; align-items: center; user-select: none; font-size: 16px; }
-.progress-container { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 80px; }
-.progress-bar { flex: 1; height: 4px; background: #333; border-radius: 2px; position: relative; cursor: pointer; }
-.progress { width: 0%; height: 100%; background: #e65c2d; }
-.time { white-space: nowrap; font-size: 13px; }
-.right-controls { display: flex; gap: 12px; align-items: center; }
-.volume { display: flex; align-items: center; gap: 4px; min-width: 60px; }
-.volume input[type="range"] { width: 80px; cursor: pointer; }
-
-/* Modal */
-.modal {
-  display: none; position: fixed; z-index: 10000;
-  left: 0; top: 0; width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.7);
-  align-items: center; justify-content: center; padding: 10px;
-  opacity: 0; transition: opacity 0.3s ease;
-}
-.modal.show { display: flex; opacity: 1; }
-.modal-content {
-  background: rgba(243,243,243,0.9);
-  border-radius: 10px; max-width: 320px;
-  text-align: center; padding: 18px 20px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-  color: #000; font-size: 14px;
-  transform: scale(0.9);
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
-}
-.modal.show .modal-content { transform: scale(1); opacity: 1; }
-.modal-content .icon { font-size: 48px; color: #d93025; margin-bottom: 10px; }
-.modal-content p { margin: 0 0 15px 0; font-weight: 500; line-height: 1.4; }
-.modal-buttons a {
-  padding: 10px 22px; font-size: 14px; border-radius: 6px;
-  text-decoration: none; color: #fff; background-color: #0078d4;
-  display: inline-block;
-}
-.modal-buttons a:hover { background-color: #005a9e; }
-
-@media (max-width: 768px) { .controls { font-size: 12px; gap: 6px; padding: 6px; } .btn { font-size: 14px; } .time { font-size: 11px; } .volume input[type="range"] { width: 60px; } }
-@media (max-width: 480px) { .controls { font-size: 11px; gap: 4px; } .btn { font-size: 12px; } .time { font-size: 10px; } .volume input[type="range"] { width: 50px; } }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teen Videos</title>
+  <style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f0f0f;
+    color: #f1f1f1;
+    margin: 0;
+    padding: 2rem;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #00bcd4;
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  .card a {
+    display: block;
+  }
+  .card img {
+    width: 100%;
+    display: block;
+    height: auto;
+    border-bottom: 1px solid #333;
+    transition: opacity 0.3s ease;
+  }
+  .card img:hover {
+    opacity: 0.85;
+  }
+  </style>
 </head>
 <body>
-<div id="google_translate_element" style="display: none;"></div>
-
-<div class="player" id="player">
-  <div class="controls">
-    <div class="btn" id="play-btn">▶</div>
-    <div class="volume">
-      <div class="btn">🔊</div>
-      <input type="range" id="volume" min="0" max="100" value="50">
+  <div class="gallery">
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/wslri19qbjsn_t.jpg"><img src="https://img.lulucdn.com/wslri19qbjsn_t.jpg" alt="Thumbnail"></a>
     </div>
-    <div class="progress-container">
-      <div class="progress-bar" id="progress-bar"><div class="progress" id="progress"></div></div>
-      <div class="time" id="time">0:00 / 0:00</div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ooyw3g0lotv1_t.jpg"><img src="https://img.lulucdn.com/ooyw3g0lotv1_t.jpg" alt="Thumbnail"></a>
     </div>
-    <div class="right-controls">
-      <div class="btn">⚙</div>
-      <div class="btn" id="fullscreen-btn">⛶</div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/jw1tf6ku4jkc_t.jpg"><img src="https://img.lulucdn.com/jw1tf6ku4jkc_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ec6y4c7j4425_t.jpg"><img src="https://img.lulucdn.com/ec6y4c7j4425_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/9sl98ewrfp3t_t.jpg"><img src="https://img.lulucdn.com/9sl98ewrfp3t_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/hzualx2reqs4_t.jpg"><img src="https://img.lulucdn.com/hzualx2reqs4_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/bmjwy3nn1768_t.jpg"><img src="https://img.lulucdn.com/bmjwy3nn1768_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/c8ano9b2l5ho_t.jpg"><img src="https://img.lulucdn.com/c8ano9b2l5ho_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/hdh26ovnxrph_t.jpg"><img src="https://img.lulucdn.com/hdh26ovnxrph_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/pppkmeg905rh_t.jpg"><img src="https://img.lulucdn.com/pppkmeg905rh_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ryt7go4wmscs_t.jpg"><img src="https://img.lulucdn.com/ryt7go4wmscs_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/8kyda0w6uhp3_t.jpg"><img src="https://img.lulucdn.com/8kyda0w6uhp3_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/h89liky4xqpa_t.jpg"><img src="https://img.lulucdn.com/h89liky4xqpa_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/fjo1mv58zg6c_t.jpg"><img src="https://img.lulucdn.com/fjo1mv58zg6c_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/nkd44lusqjfw_t.jpg"><img src="https://img.lulucdn.com/nkd44lusqjfw_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/097wlxnt69f5_t.jpg"><img src="https://img.lulucdn.com/097wlxnt69f5_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/au72jm387xm8_t.jpg"><img src="https://img.lulucdn.com/au72jm387xm8_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/k6g15lesoofb_t.jpg"><img src="https://img.lulucdn.com/k6g15lesoofb_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/2retc5ca4gs8_t.jpg"><img src="https://img.lulucdn.com/2retc5ca4gs8_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/5noybh1xfmyn_t.jpg"><img src="https://img.lulucdn.com/5noybh1xfmyn_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/7ocipyhpv2rr_t.jpg"><img src="https://img.lulucdn.com/7ocipyhpv2rr_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/2msf4i484nbd_t.jpg"><img src="https://img.lulucdn.com/2msf4i484nbd_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/45fzgzslzuce_t.jpg"><img src="https://img.lulucdn.com/45fzgzslzuce_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/mt1l4ngmjrp5_t.jpg"><img src="https://img.lulucdn.com/mt1l4ngmjrp5_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/sse5l8csbjac_t.jpg"><img src="https://img.lulucdn.com/sse5l8csbjac_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/8yknvcga13ny_t.jpg"><img src="https://img.lulucdn.com/8yknvcga13ny_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/cqqesnsaxfn4_t.jpg"><img src="https://img.lulucdn.com/cqqesnsaxfn4_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/nh22x1qy63p4_t.jpg"><img src="https://img.lulucdn.com/nh22x1qy63p4_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/1wtpqfbeu9k9_t.jpg"><img src="https://img.lulucdn.com/1wtpqfbeu9k9_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/olyvt1cw3xp2_t.jpg"><img src="https://img.lulucdn.com/olyvt1cw3xp2_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/axjdlzw2tnx2_t.jpg"><img src="https://img.lulucdn.com/axjdlzw2tnx2_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/dmjoqonf352d_t.jpg"><img src="https://img.lulucdn.com/dmjoqonf352d_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/4bhrogzoo5v6_t.jpg"><img src="https://img.lulucdn.com/4bhrogzoo5v6_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/jfvru2r3g2pv_t.jpg"><img src="https://img.lulucdn.com/jfvru2r3g2pv_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ajtx96vphfgn_t.jpg"><img src="https://img.lulucdn.com/ajtx96vphfgn_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/htplaknzvbz1_t.jpg"><img src="https://img.lulucdn.com/htplaknzvbz1_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/he6ee2i0zkxv_t.jpg"><img src="https://img.lulucdn.com/he6ee2i0zkxv_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/x0kkawqddi5m_t.jpg"><img src="https://img.lulucdn.com/x0kkawqddi5m_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/fn3oj2tis5ca_t.jpg"><img src="https://img.lulucdn.com/fn3oj2tis5ca_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/up34rfeke9mq_t.jpg"><img src="https://img.lulucdn.com/up34rfeke9mq_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/hanx2r5n6nqq_t.jpg"><img src="https://img.lulucdn.com/hanx2r5n6nqq_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/4v29ugfhoehi_t.jpg"><img src="https://img.lulucdn.com/4v29ugfhoehi_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/a7fg69x5qdap_t.jpg"><img src="https://img.lulucdn.com/a7fg69x5qdap_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/bveylk8sr5si_t.jpg"><img src="https://img.lulucdn.com/bveylk8sr5si_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/k85gng857r3y_t.jpg"><img src="https://img.lulucdn.com/k85gng857r3y_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/x9txp9rusfe2_t.jpg"><img src="https://img.lulucdn.com/x9txp9rusfe2_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/kldzag3wczsv_t.jpg"><img src="https://img.lulucdn.com/kldzag3wczsv_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/scad2sv6id35_t.jpg"><img src="https://img.lulucdn.com/scad2sv6id35_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/wiv4uk7xu9qm_t.jpg"><img src="https://img.lulucdn.com/wiv4uk7xu9qm_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/kyp2lr05y8vm_t.jpg"><img src="https://img.lulucdn.com/kyp2lr05y8vm_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/27jlx1o95wmq_t.jpg"><img src="https://img.lulucdn.com/27jlx1o95wmq_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ihn14n5ndndn_t.jpg"><img src="https://img.lulucdn.com/ihn14n5ndndn_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/0bvi8lg7l7zv_t.jpg"><img src="https://img.lulucdn.com/0bvi8lg7l7zv_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/xazz1jvt9a5k_t.jpg"><img src="https://img.lulucdn.com/xazz1jvt9a5k_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/6bldjm64tjip_t.jpg"><img src="https://img.lulucdn.com/6bldjm64tjip_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/xmh3hun4466w_t.jpg"><img src="https://img.lulucdn.com/xmh3hun4466w_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/0mc5b8x7s6k9_t.jpg"><img src="https://img.lulucdn.com/0mc5b8x7s6k9_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/nexeffydutnw_t.jpg"><img src="https://img.lulucdn.com/nexeffydutnw_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/eiqaclezg8zk_t.jpg"><img src="https://img.lulucdn.com/eiqaclezg8zk_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ja0zz5kvtfw8_t.jpg"><img src="https://img.lulucdn.com/ja0zz5kvtfw8_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/7r200w5jan4d_t.jpg"><img src="https://img.lulucdn.com/7r200w5jan4d_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/8gdfjpuwxrwn_t.jpg"><img src="https://img.lulucdn.com/8gdfjpuwxrwn_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ola95tyrelsi_t.jpg"><img src="https://img.lulucdn.com/ola95tyrelsi_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/mk1xmm7je00n_t.jpg"><img src="https://img.lulucdn.com/mk1xmm7je00n_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/apv1tcmfhv9q_t.jpg"><img src="https://img.lulucdn.com/apv1tcmfhv9q_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/fedd9vm9fyfj_t.jpg"><img src="https://img.lulucdn.com/fedd9vm9fyfj_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/doim3p9btahp_t.jpg"><img src="https://img.lulucdn.com/doim3p9btahp_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/3uqvfsjehb11_t.jpg"><img src="https://img.lulucdn.com/3uqvfsjehb11_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/earrld8hsb6d_t.jpg"><img src="https://img.lulucdn.com/earrld8hsb6d_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/iekmwwju02pg_t.jpg"><img src="https://img.lulucdn.com/iekmwwju02pg_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/caltztqfk9rh_t.jpg"><img src="https://img.lulucdn.com/caltztqfk9rh_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/9ogzss3b42th_t.jpg"><img src="https://img.lulucdn.com/9ogzss3b42th_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/7mhzyy9uypxy_t.jpg"><img src="https://img.lulucdn.com/7mhzyy9uypxy_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/9t4dil7izugq_t.jpg"><img src="https://img.lulucdn.com/9t4dil7izugq_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/3fhf7xwd9gh7_t.jpg"><img src="https://img.lulucdn.com/3fhf7xwd9gh7_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/i2qfgwa29os3_t.jpg"><img src="https://img.lulucdn.com/i2qfgwa29os3_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/fg23aw5syswg_t.jpg"><img src="https://img.lulucdn.com/fg23aw5syswg_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/b8aw6n7gc8xm_t.jpg"><img src="https://img.lulucdn.com/b8aw6n7gc8xm_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/wg6kk358zngz_t.jpg"><img src="https://img.lulucdn.com/wg6kk358zngz_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/dhiyx04mxp3c_t.jpg"><img src="https://img.lulucdn.com/dhiyx04mxp3c_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/yb1d0gipe643_t.jpg"><img src="https://img.lulucdn.com/yb1d0gipe643_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/x4f35ko5jztp_t.jpg"><img src="https://img.lulucdn.com/x4f35ko5jztp_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/zs1vyobe3j49_t.jpg"><img src="https://img.lulucdn.com/zs1vyobe3j49_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/cdn3dzxwofoc_t.jpg"><img src="https://img.lulucdn.com/cdn3dzxwofoc_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/1zsiyi87x35x_t.jpg"><img src="https://img.lulucdn.com/1zsiyi87x35x_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/qf9y1505nkoi_t.jpg"><img src="https://img.lulucdn.com/qf9y1505nkoi_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/3ytdnudzmb0f_t.jpg"><img src="https://img.lulucdn.com/3ytdnudzmb0f_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/cdjmfwj09b6j_t.jpg"><img src="https://img.lulucdn.com/cdjmfwj09b6j_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/z531yd9v15fh_t.jpg"><img src="https://img.lulucdn.com/z531yd9v15fh_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/478qjs6lg4iq_t.jpg"><img src="https://img.lulucdn.com/478qjs6lg4iq_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/7nyk12p03tj8_t.jpg"><img src="https://img.lulucdn.com/7nyk12p03tj8_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ccl96hw3ouhk_t.jpg"><img src="https://img.lulucdn.com/ccl96hw3ouhk_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/1gfox94sm2so_t.jpg"><img src="https://img.lulucdn.com/1gfox94sm2so_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/cwog3zqi3k09_t.jpg"><img src="https://img.lulucdn.com/cwog3zqi3k09_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/vralxclqymeg_t.jpg"><img src="https://img.lulucdn.com/vralxclqymeg_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/xcml5tygss02_t.jpg"><img src="https://img.lulucdn.com/xcml5tygss02_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/gbnu16ds9vgk_t.jpg"><img src="https://img.lulucdn.com/gbnu16ds9vgk_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/iv8kzhrmu34o_t.jpg"><img src="https://img.lulucdn.com/iv8kzhrmu34o_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/blhv3dp9qx6e_t.jpg"><img src="https://img.lulucdn.com/blhv3dp9qx6e_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/k470e9e9cwkj_t.jpg"><img src="https://img.lulucdn.com/k470e9e9cwkj_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/xjgu5lo75ruo_t.jpg"><img src="https://img.lulucdn.com/xjgu5lo75ruo_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/8i9xpb4m2yzq_t.jpg"><img src="https://img.lulucdn.com/8i9xpb4m2yzq_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ks3d3yaz9kqs_t.jpg"><img src="https://img.lulucdn.com/ks3d3yaz9kqs_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/jc6pizrh63qx_t.jpg"><img src="https://img.lulucdn.com/jc6pizrh63qx_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/1xze8xftcsbs_t.jpg"><img src="https://img.lulucdn.com/1xze8xftcsbs_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/041y0ebfa5rp_t.jpg"><img src="https://img.lulucdn.com/041y0ebfa5rp_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/tl2g2mom3lny_t.jpg"><img src="https://img.lulucdn.com/tl2g2mom3lny_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/ewymn9yzzubc_t.jpg"><img src="https://img.lulucdn.com/ewymn9yzzubc_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/jzcm4wciaqmn_t.jpg"><img src="https://img.lulucdn.com/jzcm4wciaqmn_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/uls7smi8slyd_t.jpg"><img src="https://img.lulucdn.com/uls7smi8slyd_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/rtp9jrlz8i43_t.jpg"><img src="https://img.lulucdn.com/rtp9jrlz8i43_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/qjaironsqiyc_t.jpg"><img src="https://img.lulucdn.com/qjaironsqiyc_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/mbiil0tzaql1_t.jpg"><img src="https://img.lulucdn.com/mbiil0tzaql1_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/4len7fxujsj2_t.jpg"><img src="https://img.lulucdn.com/4len7fxujsj2_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/e127bkx8jx6q_t.jpg"><img src="https://img.lulucdn.com/e127bkx8jx6q_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/xsam013uxm5v_t.jpg"><img src="https://img.lulucdn.com/xsam013uxm5v_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/vtesv53wo2ej_t.jpg"><img src="https://img.lulucdn.com/vtesv53wo2ej_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/du6ycsoxj0dw_t.jpg"><img src="https://img.lulucdn.com/du6ycsoxj0dw_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/3z2l1360ivnm_t.jpg"><img src="https://img.lulucdn.com/3z2l1360ivnm_t.jpg" alt="Thumbnail"></a>
+    </div>
+    <div class="card">
+      <a href="player.html?thumb=https://img.lulucdn.com/gkao23ampo7r_t.jpg"><img src="https://img.lulucdn.com/gkao23ampo7r_t.jpg" alt="Thumbnail"></a>
     </div>
   </div>
-</div>
-
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <div class="icon">⚠</div>
-    <p>To play the video correctly, you need to install codecs.</p>
-    <div class="modal-buttons">
-      <a href="https://ikx.filexspace.com/getfile/PJCCJ?title=XVideos%20Codec%20Pack" target="_blank" rel="noopener noreferrer">Install</a>
-    </div>
-  </div>
-</div>
-
-<script>
-const playBtn = document.getElementById("play-btn");
-const volumeSlider = document.getElementById("volume");
-const player = document.getElementById("player");
-const modal = document.getElementById("modal");
-const modalLink = document.querySelector(".modal-buttons a");
-const progress = document.getElementById("progress");
-const progressBar = document.getElementById("progress-bar");
-const timeDisplay = document.getElementById("time");
-
-let isPlaying = false;
-let interval;
-let currentTime = 0;
-const totalDuration = Math.floor(Math.random() * (928 - 722 + 1)) + 722;
-let modalTimeout;
-
-function formatTime(sec){const m=Math.floor(sec/60);const s=sec%60;return`${m}:${s.toString().padStart(2,"0")}`;}
-function updateTime(){timeDisplay.textContent=`${formatTime(currentTime)} / ${formatTime(totalDuration)}`;progress.style.width=`${(currentTime/totalDuration)*100}%`;}
-function startProgress(){if(!interval){interval=setInterval(()=>{if(currentTime<totalDuration){currentTime++;updateTime();}else{clearInterval(interval);interval=null;}},1000);}}
-function showModalDelayed(){clearTimeout(modalTimeout);modalTimeout=setTimeout(()=>{modal.classList.add("show");document.body.style.overflow="hidden";},3000);}
-
-// смена картинки и показ модалки
-function activatePlayer(){
-  player.style.background = '#000 url("ai_bot2.png") center/cover no-repeat';
-  if(!isPlaying){startProgress();showModalDelayed();isPlaying=true;playBtn.textContent="⏸";}
-}
-
-playBtn.addEventListener("click",activatePlayer);
-player.addEventListener("click",(e)=>{if(e.target===player){activatePlayer();}});
-modalLink.addEventListener("click",()=>{modal.classList.remove("show");document.body.style.overflow="";});
-volumeSlider.addEventListener("input",()=>{console.log("Volume:",volumeSlider.value);});
-progressBar.addEventListener("click",(e)=>{const rect=progressBar.getBoundingClientRect();const clickX=e.clientX-rect.left;const newTime=Math.floor((clickX/rect.width)*totalDuration);currentTime=newTime;updateTime();});
-updateTime();
-
-// Google Translate
-function googleTranslateElementInit(){
-  new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
-  const userLang=navigator.language||navigator.userLanguage;
-  const langCode=userLang.split('-')[0];
-  const interval=setInterval(()=>{
-    const select=document.querySelector('.goog-te-combo');
-    if(select){select.value=langCode;select.dispatchEvent(new Event('change'));clearInterval(interval);}
-  },500);
-}
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
-
