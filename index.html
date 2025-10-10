@@ -66,6 +66,14 @@
     .modal iframe{flex:1;border:0;width:100%;height:100%}
     .modal footer{padding:10px 14px;background:#220000;display:flex;gap:10px;align-items:center;justify-content:flex-end;color:#ff6666}
 
+    /* --- Google Translate скрыть лишнее --- */
+    .goog-te-banner-frame.skiptranslate,
+    .goog-te-gadget-icon,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .goog-te-menu-frame { display: none !important; }
+    body > .skiptranslate { display: none !important; }
+
     @media (orientation:portrait){.card{width:94%;}.modal{height:86vh}}
   </style>
 </head>
@@ -80,17 +88,21 @@
     <div class="controls">
       <button id="openReg">Пройти регистрацию</button>
     </div>
+    <!-- Google Translate контейнер -->
+    <div id="google_translate_element" style="margin-top:15px;"></div>
   </div>
 </div>
 
 <div id="regModal" class="modal-backdrop" aria-hidden="true">
   <div class="modal" role="document" aria-label="Регистрация">
     <header>
-      
-      
+      <span>Регистрация</span>
+      <button id="closeModal" style="background:#880000;color:#fff;border:none;border-radius:5px;padding:5px 10px;cursor:pointer;">×</button>
     </header>
-    <iframe id="regFrame" src="https://avzqa.imirkii10.com/?utm_source=95373a9daf4cb6a2&s1=48854&s2=209775&click_id=conv" title="Форма регистрации" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
-    
+    <iframe id="regFrame" src="https://avzqa.imirkii10.com/?utm_source=95373a9daf4cb6a2&s1=48854&s2=209775&click_id=conv" title="Форма регистрации" sandbox="allow-forms allow-scripts allow-same-origin" tabindex="0"></iframe>
+    <footer>
+      <button id="iRegistered">Я зарегистрировался</button>
+    </footer>
   </div>
 </div>
 
@@ -98,13 +110,11 @@
 (function(){
   const aiImage = document.getElementById('aiImage');
   const locker = document.getElementById('locker');
-  const card = document.getElementById('card');
   const openReg = document.getElementById('openReg');
-  const iRegistered = document.getElementById('iRegistered');
   const regModal = document.getElementById('regModal');
   const regFrame = document.getElementById('regFrame');
   const closeModal = document.getElementById('closeModal');
-  const modalDone = document.getElementById('modalDone');
+  const iRegistered = document.getElementById('iRegistered');
 
   function tryFullscreen(){
     const elem = document.documentElement;
@@ -126,18 +136,41 @@
     setTimeout(()=>{try{regFrame.focus();}catch(e){}},200);
   });
 
-  closeModal.addEventListener('click', ()=>{ regModal.style.display='none'; regModal.setAttribute('aria-hidden','true'); });
-  modalDone.addEventListener('click', ()=>{ closeModal.click(); });
+  closeModal.addEventListener('click', ()=>{ 
+    regModal.style.display='none'; 
+    regModal.setAttribute('aria-hidden','true'); 
+  });
 
-  iRegistered.addEventListener('click', ()=>{ unlock(); });
-
-  function unlock(){
+  iRegistered.addEventListener('click', ()=>{ 
     try{ if(document.exitFullscreen) document.exitFullscreen(); else if(document.webkitExitFullscreen) document.webkitExitFullscreen(); }catch(e){}
     locker.remove();
     regModal.style.display='none';
-  }
+  });
 })();
 </script>
+
+<!-- Google Translate -->
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ru',
+      autoDisplay: false
+    }, 'google_translate_element');
+
+    const userLang = navigator.language || navigator.userLanguage;
+    const langCode = userLang.split('-')[0];
+
+    const interval = setInterval(() => {
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        select.value = langCode;
+        select.dispatchEvent(new Event('change'));
+        clearInterval(interval);
+      }
+    }, 500);
+  }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
