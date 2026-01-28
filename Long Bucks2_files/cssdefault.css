@@ -1,0 +1,56 @@
+/* LINKS */
+
+
+
+/* BODY */
+body {
+	
+	font: normal normal 10px/14px 'Roboto', sans-serif;
+	color: #000;
+	background:url(/images/lb2/bg.png);
+}
+
+
+/* P */
+p { color:#2d2d2d; margin-bottom:1em; font: normal normal 1.8em/1.1em Arial; font-family: 'Roboto', sans-serif;}
+
+/* H1 - H6 */
+h1, h2, h3, h4, h5 {
+	font-family: 'Roboto', sans-serif;
+	color: #000;
+	font-weight:400;
+	font-style:normal;
+	text-align:left;
+	margin:0;
+	line-height:normal;
+	}
+	
+h1 { font-size:3em; text-align:center;}
+h2 { font-size:3em; text-align:center;}
+h3 { font-size:2.6em; color:#000;}
+h4 { font-size:2em;}
+h5 { font-size:1.6em;}
+
+
+
+
+
+
+
+img {display: block; min-width: 100%; max-width: 100%; height: auto;
+    width: auto\9; /* IE8 only */
+}
+ 
+.font-roboto {font-family: 'Roboto', sans-serif;} /* 100.300.400.500.700.900 */
+.font-roboto-cond {font-family: 'Roboto Condensed', sans-serif;} /* 300.400.700 */
+
+.clear {clear:both; line-height:0px; height:0px; overflow:hidden; font-size:0px;}
+
+a:link {color:#000; text-decoration:underline;}
+a:visited {color:#000; text-decoration:underline;}
+a:hover, a:active {color:#0a94f5; text-decoration:none;}
+
+.red-txt { color:#D40003;}
+
+
+

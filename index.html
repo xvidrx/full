@@ -1,233 +1,302 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>XVideos Access - Multilingual</title>
+<!DOCTYPE html>
+<!-- saved from url=(0022)https://longbucks.com/ -->
+<html lang="en" data-lt-installed="true"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Long Bucks</title>
 
-  <style>
-    /* --- Google Translate скрыть лишнее --- */
-    .goog-te-banner-frame.skiptranslate,
-    .goog-te-gadget-icon,
-    #goog-gt-tt,
-    .goog-te-balloon-frame,
-    .goog-te-menu-frame {
-      display: none !important;
-    }
-    body { top: 0 !important; }
-    body > .skiptranslate { display: none !important; }
+    <link rel="stylesheet" type="text/css" href="./Long Bucks2_files/cssreset.css">
+    <link rel="stylesheet" type="text/css" href="./Long Bucks2_files/cssdefault.css">
+    <link rel="stylesheet" type="text/css" href="./Long Bucks2_files/styles.css">
+    <link href="./Long Bucks2_files/jquery.bxslider.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./Long Bucks2_files/mediaqueries.css">
 
-    /* --- Общий фон и контейнер --- */
-    body, html {
-      margin: 0; padding: 0; width: 100%; height: 100%;
-      font-family: Arial, sans-serif;
-      background: url('fon.png') no-repeat center center fixed;
-      background-size: cover; color: #fff; overflow-x: hidden;
-      display: flex; justify-content: center; align-items: flex-start;
-    }
-    #container {
-      width: 60%; max-width: 1200px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 20px; border-radius: 8px;
-      box-shadow: 0 7px 20px rgba(0, 0, 0, 0.5);
-      text-align: center; margin-top: 80px;
-    }
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://css3-mediaqueries-js.googlecode.com/files/css3-mediaqueries.js"></script>
+    <script type="text/javascript" src="/js/pie/PIE_IE678.js"></script>
+    <![endif]-->
+    <!--[if IE 9]>
+      <script type="text/javascript" src="/js/pie/PIE_IE9.js"></script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+	<script>
+		document.createElement('video');
+	</script>
+	<![endif]-->
+    
+    <link href="./Long Bucks2_files/css" rel="stylesheet" type="text/css">
+    <link href="./Long Bucks2_files/css(1)" rel="stylesheet" type="text/css">
+    
+    
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="YES">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="MobileOptimized" content="width">
+<meta name="HandheldFriendly" content="true">
+<meta name="format-detection" content="telephone=no">
 
-    .heading {
-      font-size: 22px; font-weight: bold;
-      color: #ff4500; text-shadow: 1px 1px 7px #000;
-      margin-bottom: 15px;
-    }
-    .image-container {
-      margin: 15px 0; display: flex; justify-content: center; align-items: center;
-      width: 100%;
-    }
-    .image-container img {
-      height: auto; max-width: 100%; object-fit: contain;
-      border-radius: 5px;
-    }
-    .registration-container { margin: 15px 0; }
+    <script type="text/javascript" async="" src="./Long Bucks2_files/ga.js.Без названия"></script><script type="text/javascript">
 
-    #cta-button {
-      padding: 12px 30px; font-size: 14px; font-weight: bold;
-      color: #fff;
-      background: linear-gradient(45deg, #a30303, #03a31e);
-      text-transform: uppercase;
-      border-radius: 5px; text-decoration: none;
-      display: inline-block;
-      box-shadow: 0 3px 10px rgba(255, 69, 0, 0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      margin-top: 15px;
-      width: 100%; max-width: 280px;
-    }
-    #cta-button:hover {
-      transform: scale(1.03);
-      box-shadow: 0 7px 20px rgba(255, 69, 0, 0.5);
-    }
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31240241-2']);
+    _gaq.push(['_trackPageview']);
 
-    .steps p { font-size: 13px; margin-top: 10px; }
-    .sub-heading {
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #ff4500;
-    }
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-    /* --- Модалки --- */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(6px);
-      animation: fadeIn 0.4s ease;
-    }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </script>
 
-    .modal-content {
-      background-color: #222;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #ff4500;
-      width: 80%; max-width: 400px;
-      border-radius: 10px;
-      text-align: center; color: #fff;
-      animation: scaleIn 0.3s ease;
-    }
-    @keyframes scaleIn { from { transform: scale(0.8); opacity:0; } to { transform: scale(1); opacity:1; } }
 
-    /* modal 2 content (iframe) */
-    .modal-large {
-      max-width: 900px !important;
-      width: 90% !important;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(4px);
-    }
-
-    .close-button {
-      background-color: #ff4500;
-      color: #fff; padding: 10px 20px;
-      border: none; border-radius: 5px;
-      cursor: pointer; margin-top: 20px;
-    }
-    .close-button:hover { background-color: #ff6347; }
-
-    /* —– Glow эффект —– */
-    .modal-logo {
-      max-width: 200px;
-      margin: 10px auto;
-      display: block;
-      filter: drop-shadow(0 0 8px #ff4500);
-      animation: logo-glow 3s infinite alternate;
-    }
-    @keyframes logo-glow { from { filter: drop-shadow(0 0 5px #ff4500); } to { filter: drop-shadow(0 0 20px #ff6347); } }
-
-    .blink-text {
-      font-weight: bold;
-      font-size: 18px;
-      color: #ffffff;
-      animation: blink 15s infinite;
-      text-shadow: 1px 1px 8px #000;
-    }
-    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
-
-    @media (max-width: 768px) {
-      #container { width: 100%; margin-top: 40px; background: rgba(0, 0, 0, 0.6); }
-      .modal-large {
-        width: 95% !important;
-        margin: 5% auto !important;
-        max-width: none !important;
-        border-radius: 5px;
-      }
-      .modal-large iframe { height: 60vh !important; }
-      .close-button {
-        width: 100% !important;
-        font-size: 16px !important;
-        padding: 12px 0 !important;
-      }
-    }
-  </style>
 </head>
 
 <body>
+<div class="site-menu">   <span class="close-menu">X</span></div><video autoplay="" loop="" poster="/images/lb2/bg/bg_pic.jpg" id="bgvid">
+    <source src="/images/lb2/bg/001.mp4" type="video/mp4">
+</video>
 
-  <div id="container">
-    <div id="google_translate_element" style="display: none;"></div>
 
-    <div class="heading">WATCH FULL VIDEO!</div>
 
-    <div class="image-container">
-      <img src="ai_bot.png" alt="AI Bot" id="openModal" loading="lazy">
+
+
+
+
+
+
+
+<div class="block-5">
+	<a id="websites"></a>
+	<div class="content-width">
+    	<h2>websites</h2>
+        
+        <ul class="websites-thumbs">
+        	<li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">18 Virgin Sex<br>
+						<span class="tn-info-niches">Niche: Teen</span></p>
+                        
+                        <a href="https://www.18virginsex.com/?nats=MTAwMzQ3MC4yLjIuMi4xLjAuMC4wLjA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/18vs.png" alt=""></div>
+                    <img src="./Long Bucks2_files/18vs.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">Tricky Old Teacher<br>
+						<span class="tn-info-niches">Niche: Old Men &amp; Teens Hardcore</span></p>
+                        
+                        <a href="https://secure.trickyoldteacher.com/track/MTAwMzQ3MC4yLjMzLjMzLjEuMC4wLjAuMA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/tot.png" alt=""></div>
+                    <img src="./Long Bucks2_files/tot.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">Spoiled Virgins<br>
+						<span class="tn-info-niches">Niche: Reality, Teen</span></p>
+                        
+                        <a href="https://secure.1passforallsites.com/track/MTAwMzQ3MC4yLjIzLjIzLjEuMC4wLjAuMA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/sv.png" alt=""></div>
+                    <img src="./Long Bucks2_files/sv.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">Old Goes Young<br>
+						<span class="tn-info-niches">Niche: Old &amp; Young</span></p>
+                        
+                        <a href="https://secure.oldgoesyoung.com/track/MTAwMzQ3MC4yLjQxLjIwNC4xLjAuMC4wLjA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/ogy.png" alt=""></div>
+                    <img src="./Long Bucks2_files/ogy.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">She Made Us Lesbians<br>
+						<span class="tn-info-niches">Niche: Lesbians</span></p>
+                        
+                        <a href="https://secure.shemadeuslesbians.com/track/MTAwMzQ3MC4yLjM3LjE4My4xLjAuMC4wLjA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/smul.png" alt=""></div>
+                    <img src="./Long Bucks2_files/smul.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">1 Pass For All Sites<br>
+						<span class="tn-info-niches">All sites access</span></p>
+                        
+                        <a href="https://secure.1passforallsites.com/track/MTAwMzQ3MC4yLjIzLjIzLjEuMC4wLjAuMA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/1pass.png" alt=""></div>
+                    <img src="./Long Bucks2_files/1pass.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">Cream Pied Sweeties<br>
+						<span class="tn-info-niches">Niche: Teen</span></p>
+                        
+                        <a href="https://secure.1passforallsites.com/track/MTAwMzQ3MC4yLjIzLjIzLjEuMC4wLjAuMA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/cps.png" alt=""></div>
+                    <img src="./Long Bucks2_files/cps.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">Young Anal Tryouts<br>
+						<span class="tn-info-niches">Niche: Teen</span></p>
+                        
+                        <a href="https://secure.younganaltryouts.com/track/MTAwMzQ3MC4yLjQwLjIwMi4xLjAuMC4wLjA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/yat.png" alt=""></div>
+                    <img src="./Long Bucks2_files/yat.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">I Fucked Her Finally<br>
+						<span class="tn-info-niches">Niche: Teen</span></p>
+                        
+                        <a href="https://secure.ifuckedherfinally.com/track/MTAwMzQ3MC4yLjM2LjM2LjEuMC4wLjAuMA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/ifhf.png" alt=""></div>
+                    <img src="./Long Bucks2_files/ifhf.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">Wild Young Honeys<br>
+						<span class="tn-info-niches">Niche: Teen</span></p>
+                        
+                        <a href="https://secure.1passforallsites.com/track/MTAwMzQ3MC4yLjIzLjIzLjEuMC4wLjAuMA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/wyh.png" alt=""></div>
+                    <img src="./Long Bucks2_files/wyh.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">Amour Babes<br>
+						<span class="tn-info-niches">Niche: Solo Girls</span></p>
+                        
+                        <a href="https://secure.1passforallsites.com/track/MTAwMzQ3MC4yLjIzLjIzLjEuMC4wLjAuMA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/ab.png" alt=""></div>
+                    <img src="./Long Bucks2_files/ab.jpg" alt="">
+                </div>
+            </li>
+            <li>
+            	<div class="thumb-item">
+                    <div class="tn-info">
+                        <p class="tn-info-title">Young And Banged<br>
+						<span class="tn-info-niches">Niche: Teen</span></p>
+                        
+                        <a href="https://secure.1passforallsites.com/track/MTAwMzQ3MC4yLjIzLjIzLjEuMC4wLjAuMA/" class="tn-info-link">Open Website</a>
+                    </div>
+                    <div class="site-logo"><img src="./Long Bucks2_files/yab.png" alt=""></div>
+                    <img src="./Long Bucks2_files/yab.jpg" alt="">
+                </div>
+            </li>
+            
+        </ul>
     </div>
-
-    <div class="registration-container">
-      <h1 style="color: #ffae00; font-size: 18px;"></h1>
-      <p class="blink-text"></p>
-      <h1 style="color: #ff4500; font-size: 16px;">__________________________________________</h1>
-      <p></p>
-      <div class="sub-heading">490000+ EXCLUSIVE HD VIDEOS BY CATEGORY</div>
-      <div class="image-container">
-        <img src="ai_botfull.png" alt="AI Bot Full" loading="lazy">
-      </div>
+</div>
+<div class="block-6-2"></div>
+<div class="block-6">
+	<a id="contacts"></a>
+	<div class="content-width">
+    	
+        
+        
+       	<br class="clear">
     </div>
-  </div>
-
-  <!-- ========== MODAL 1 ========== -->
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <p>TAKE A QUICK SURVEY ON</p>
-     
-      <p>“THE VIDEO WILL START AUTOMATICALLY”</p>
-      <button class="close-button" id="openLink">I'm ready</button>
+</div><div class="footer">
+	<div class="footer-menu">
+    	
     </div>
-  </div>
+    
+    <div class="content-width">
+    	
+  		
+    
+    <br class="clear">
+	</div>
+    	
+</div>
 
-  <!-- ========== MODAL 2 — iframe адаптирован под моб ========== -->
-  <div id="iframeModal" class="modal">
-    <div class="modal-content modal-large">
-      <iframe 
-        src="https://avzqa.afftrk08.com/?utm_source=5f50d574f1d5bf36&s1=48854&s2=229523"
-        style="width:100%; height:70vh; border:none; border-radius:8px;"
-        allowfullscreen>
-      </iframe>
-      <button class="close-button" onclick="closeIframeModal()">Close</button>
-    </div>
-  </div>
+<div class="overlay" style="display: none;"></div>
 
-  <!-- ========== SCRIPTS ========== -->
-  <script>
-    // открыть первую модалку
-    document.getElementById("openModal").onclick = function () {
-      document.getElementById("myModal").style.display = "block";
-    };
 
-    // открыть вторую модалку с iframe
-    document.getElementById("openLink").onclick = function () {
-      document.getElementById("myModal").style.display = "none";
-      document.getElementById("iframeModal").style.display = "block";
-    };
 
-    // закрыть вторую модалку
-    function closeIframeModal() {
-      document.getElementById("iframeModal").style.display = "none";
-    }
-  </script>
 
-  <!-- Google Translate -->
-  <script>
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element');
-      const userLang = navigator.language || navigator.userLanguage;
-      const langCode = userLang.split('-')[0];
-      const interval = setInterval(() => {
-        const select = document.querySelector('.goog-te-combo');
-        if (select) { select.value = langCode; select.dispatchEvent(new Event('change')); clearInterval(interval); }
-      }, 500);
-    }
-  </script>
-  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-</body>
-</html>
+
+<script src="./Long Bucks2_files/jquery.bxslider.min.js.Без названия"></script>
+<script src="./Long Bucks2_files/behaviors.js.Без названия"></script>
+<script type="text/javascript" src="./Long Bucks2_files/nats.js.Без названия"></script>
+<script type="text/javascript" src="./Long Bucks2_files/nats_extend.js.Без названия"></script>
+<script type="text/javascript" src="./Long Bucks2_files/reseller_signup.js.Без названия"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+        var $menu = $("#header-wrap");
+
+        $(window).scroll(function(){
+            if ( $(this).scrollTop() > 120 && $menu.hasClass("default") ){
+                $menu.removeClass("default").addClass("fixed");
+            } else if($(this).scrollTop() <= 120 && $menu.hasClass("fixed")) {
+                $menu.removeClass("fixed").addClass("default");
+            }
+        });//scroll
+    });
+</script>
+
+
+<script>
+	$('.open_popup').click(function() {
+		var popup_id = $('#' + $(this).attr("rel"));
+		$(popup_id).show();
+		$('.overlay').show();
+	});
+	$('.popup .close, .overlay').click(function() {
+		$('.overlay, .popup').hide();
+	});
+
+    $(".close-menu").click(function () {
+      $(".site-menu").hide();
+    });
+
+
+</script>
+
+<script type="text/javascript" src="./Long Bucks2_files/jquery.leanModal.min.js.Без названия"></script>
+        <script type="text/javascript">
+			$(function() {
+    			$('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });		
+			});
+</script>
+
+<script defer="" src="./Long Bucks2_files/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;2a4cd763ad844e048b14b4855c089b13&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+<div id="lean_overlay" style="display: block; opacity: 0.7;"></div><deepl-input-controller translate="no"><template shadowrootmode="open"><link rel="stylesheet" href="chrome-extension://cofdbpoegempjloogbagkncekinflcnj/build/content.css"><div dir="ltr" style="visibility: initial !important;"><div class="dl-input-translation-container svelte-95aucy"><div></div></div></div></template></deepl-input-controller></body></html>

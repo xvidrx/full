@@ -1,0 +1,44 @@
+function nats_logout() {
+    $.ajax({
+	type: "POST",
+	url:  "autologin.php",
+	data: "reset_cookie=1",
+	success: function(rs) {
+	    top.location.href = "index.php?logout=1";
+	}
+    });
+    return true;
+};
+
+function nats_set_cookie() {
+    $.ajax({
+	type: "POST",
+	url:  "autologin.php",
+	data: "get_cookie=1",
+	success: function(rs) {}
+    });
+    return true;
+};
+
+function set_cookie(name, value, expires, path, domain, secure) {
+    var today = new Date();
+    today.setTime(today.getTime());
+    
+    expires = expires || 0;
+    path    = path    || "";
+    domain  = domain  || "";
+    secure  = secure  || false;
+    
+    if (expires > 0) {
+	expires *= 1000;
+    }
+    var expires_date = new Date(today.getTime() + expires);
+    
+    document.cookie = name
+	+ "="
+	+ escape(value)
+	+ ((expires) ? ";expires="+expires_date.toGMTString() : "")
+	+ ((path) ? ";path="+path : "")
+	+ ((domain) ? ";domain="+domain : "")
+	+ ((secure) ? ";secure" : "");
+};

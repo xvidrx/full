@@ -1,0 +1,7 @@
+$(document).ready(function(){
+  var ua = navigator.userAgent;
+  var mntr_width = screen.width;
+  var mntr_height = screen.height; 
+  var mntr_info = ' Monitor: '+mntr_width+'x'+mntr_height;
+  $("#advancedSignupForm").append('<input type="hidden" name="signup[custom3]" value="'+ua+'|'+mntr_info+'" />');
+});

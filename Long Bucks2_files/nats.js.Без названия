@@ -1,0 +1,108 @@
+function send_to(url) {
+	var a = document.createElement("a");
+	a.setAttribute("href", url);
+	a.style.display = "none";
+	$("body").append(a);
+	a.click();
+}
+
+function verifyLink(url, text)
+{
+	var browser=navigator.appName; 
+	var confirmed = confirm(text);
+	if (confirmed){
+		if (browser=="Microsoft Internet Explorer"){
+			send_to(url);
+		}
+		else{
+			document.location.href = url;
+		}
+	}
+}
+
+
+
+var MouseIsOver = false;
+document.onmousemove = GetMouseXY;
+var IE = document.all ? true : false;
+
+function HintShow(text)
+{
+	MouseIsOver = true;
+	GetMouseXY();
+	var width_wanted = text.length*7;
+	if (IE) {
+		document.all.hintbox.style.visibility='visible';
+		document.all.hintboxtext.innerHTML = text;
+		document.all.hintbox.style.width=width_wanted;
+	} else {
+		document.getElementById('hintbox').style.visibility='visible';
+		document.getElementById('hintboxtext').innerHTML = text;
+		document.getElementById('hintbox').style.width=width_wanted;
+	}
+}
+
+function HintHide()
+{
+	if (IE) {
+		document.all.hintbox.style.visibility='hidden';
+	} else {
+		document.getElementById('hintbox').style.visibility='hidden';
+	}
+	MouseIsOver = false;
+}
+
+function GetMouseXY(e)
+{
+	if (MouseIsOver)
+	{
+		if (IE) {
+			document.all.hintbox.style.top = event.clientY + document.body.scrollTop+20;
+			document.all.hintbox.style.left = event.clientX + document.body.scrollLeft+10;
+		} else if (e) {
+			document.getElementById('hintbox').style.top = e.clientY + document.body.scrollTop+20;
+			document.getElementById('hintbox').style.left = e.clientX + document.body.scrollLeft+10;
+		}
+	}
+}
+
+function CheckAll(mylist) {
+  len = mylist.elements.length;
+  var i=0;
+  for( i=0; i < len; i++) {
+	mylist.elements[i].checked = 1;
+  }
+}
+
+function UncheckAll(mylist) {
+  len = mylist.elements.length;
+  var i=0;
+  for( i=0; i < len; i++) {
+	mylist.elements[i].checked = 0;
+  }
+}
+
+function InvertAll(mylist) {
+  len = mylist.elements.length;
+  var i=0;
+  for( i=0; i < len; i++) {
+      if (mylist.elements[i].checked == 1){
+	mylist.elements[i].checked = 0;
+      }else{
+	mylist.elements[i].checked = 1;
+      }	
+  }
+}
+
+var javascipt_on=1;
+
+function Get_Query_String(ji) {
+	hu = window.location.search.substring(1);
+	gy = hu.split("&");
+	for (i=0;i<gy.length;i++) {
+		ft = gy[i].split("=");
+		if (ft[0] == ji) {
+			return ft[1];
+		}
+	}
+}

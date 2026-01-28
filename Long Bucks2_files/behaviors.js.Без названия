@@ -1,0 +1,37 @@
+function setupSliders($) {
+    $('#slider').bxSlider({
+  	//mode: 'fade',
+  	auto: true,
+  	pause: 5000
+	});
+}
+
+function setupMenu($) {
+  $('#m-menu').on('click', 'ul a[href^="#"]', function(event) {
+    if ($('#m-menu .modal_close:visible').length == 1) {
+      // mobile menu opened, emulate close
+      $('#m-menu .modal_close').trigger('click');
+
+    }
+
+    // handle anchor nav
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    var targetId = event.currentTarget.getAttribute('href').trim();
+    var $targetSection = $(targetId);
+    
+    if (targetId.length > 0) {
+      $("html, body").animate({ scrollTop: $targetSection.offset().top - 60 }, 500);
+    }
+  });
+}
+
+(function($) {
+    $(document).ready(function(){
+        setupSliders($);
+        setupMenu($);
+    });
+})(jQuery);
+
+
