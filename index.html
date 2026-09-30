@@ -4,94 +4,141 @@
   <meta charset="UTF-8">
   <title>Free Video</title>
   <link rel="stylesheet" type="text/css" href="styles.css" media="all">
+
   <script>
     function isMobile() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
     }
 
-    // Переводы
+    const links = {
+      mobile: "https://nord.affpmelody.com/click?pid=116623&offer_id=844#join",
+      desktop: "https://nord.affpmelody.com/click?pid=116623&offer_id=844&redirect=https://gaysprivate.com/members/join"
+    };
+
+    function getTargetUrl() {
+      return isMobile() ? links.mobile : links.desktop;
+    }
+
     const translations = {
       en: {
-        title: "Stick your dick comfortably!",
-        sub1: "EXCLUSIVE VIDEOS 18+!",
-        sub2: "registration without e-mail confirmation",
-        button: "114,059 VIDEOS FOR FREE!"
+        title: "Welcome!",
+        sub1: "EXCLUSIVE VIDEOS!",
+        sub2: "Registration without e-mail confirmation",
+        button: "WATCH FOR FREE!"
       },
       ru: {
-        title: "Вставляй удобно!",
-        sub1: "ЭКСКЛЮЗИВНЫЕ ВИДЕО 18+!",
+        title: "Добро пожаловать!",
+        sub1: "ЭКСКЛЮЗИВНЫЕ ВИДЕО!",
         sub2: "регистрация без подтверждения почты",
-        button: "114 059 ВИДЕО БЕСПЛАТНО!"
+        button: "СМОТРЕТЬ БЕСПЛАТНО!"
       },
       es: {
-        title: "¡Mételo cómodamente!",
-        sub1: "¡VIDEOS EXCLUSIVOS 18+!",
+        title: "¡Bienvenido!",
+        sub1: "¡VIDEOS EXCLUSIVOS!",
         sub2: "registro sin confirmación por correo",
-        button: "¡114.059 VIDEOS GRATIS!"
+        button: "¡VER GRATIS!"
       },
       de: {
-        title: "Steck ihn bequem rein!",
-        sub1: "EXKLUSIVE VIDEOS 18+!",
+        title: "Willkommen!",
+        sub1: "EXKLUSIVE VIDEOS!",
         sub2: "Registrierung ohne E-Mail-Bestätigung",
-        button: "114.059 VIDEOS GRATIS!"
+        button: "KOSTENLOS ANSEHEN!"
       },
       fr: {
-        title: "Insère-le confortablement !",
-        sub1: "VIDÉOS EXCLUSIVES 18+!",
+        title: "Bienvenue !",
+        sub1: "VIDÉOS EXCLUSIVES !",
         sub2: "inscription sans confirmation par e-mail",
-        button: "114 059 VIDÉOS GRATUITES !"
+        button: "REGARDER GRATUITEMENT !"
       },
       pt: {
-        title: "Enfie com conforto!",
-        sub1: "VÍDEOS EXCLUSIVOS 18+!",
+        title: "Bem-vindo!",
+        sub1: "VÍDEOS EXCLUSIVOS!",
         sub2: "registro sem confirmação de e-mail",
-        button: "114.059 VÍDEOS GRÁTIS!"
+        button: "ASSISTA GRÁTIS!"
       },
       ar: {
-        title: "أدخلها براحة!",
+        title: "مرحباً!",
         sub1: "فيديوهات حصرية!",
         sub2: "تسجيل بدون تأكيد عبر البريد",
-        button: "114,059 فيديو مجاني!"
+        button: "شاهد مجاناً!"
       }
     };
 
-    // Выбор языка и установка текста
-    window.onload = function () {
-      const userLang = (navigator.language || navigator.userLanguage || "en").slice(0, 2);
+    function makeEntirePageClickable(url) {
+      const wrapper = document.querySelector(".wrapper");
+      if (!wrapper || wrapper.dataset.linkInitialized === "true") return;
+
+      wrapper.dataset.linkInitialized = "true";
+
+      wrapper.addEventListener("click", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        window.location.href = url;
+      });
+    }
+
+    window.onload = function() {
+      const userLang = (
+        navigator.language ||
+        navigator.userLanguage ||
+        "en"
+      ).slice(0, 2);
+
       const lang = translations[userLang] ? userLang : "en";
       const t = translations[lang];
 
-      // Установка текста
-      document.querySelector('.header h1').innerText = t.title;
-      document.querySelector('.block-tt h2').innerText = t.sub1;
-      document.querySelector('.block-tt h3').innerText = t.sub2;
-      const btn = document.getElementById('cta-button');
+      const title = document.querySelector(".header h1");
+      const sub1 = document.querySelector(".block-tt h2");
+      const sub2 = document.querySelector(".block-tt h3");
+      const btn = document.getElementById("cta-button");
+      const logo = document.querySelector(".logo a");
+
+      if (title) title.innerText = t.title;
+      if (sub1) sub1.innerText = t.sub1;
+      if (sub2) sub2.innerText = t.sub2;
+
+      const targetUrl = getTargetUrl();
+
       if (btn) {
         btn.innerText = t.button;
-        btn.href = isMobile()
-          ? "https://nord.affpmelody.com/click?pid=116623&offer_id=844#join"
-          : "https://nord.affpmelody.com/click?pid=116623&offer_id=844&redirect=https://gaysprivate.com/members/join";
+        btn.href = targetUrl;
       }
+
+      if (logo) {
+        logo.href = targetUrl;
+      }
+
+      makeEntirePageClickable(targetUrl);
     };
   </script>
 </head>
+
 <body>
   <div class="wrapper">
     <div class="header">
-      <strong class="logo"><a href="#">Free Video</a></strong>
-      <h1>Stick your dick comfortably!</h1> <!-- Заменится динамически -->
+      <strong class="logo">
+        <a href="https://example.com/desktop">Free Video</a>
+      </strong>
+      <h1>Welcome!</h1>
     </div>
+
     <div class="block-tt">
-      <h2>EXCLUSIVE VIDEOS 18+!</h2> <!-- Заменится динамически -->
-      <h3>registration without e-mail confirmation</h3> <!-- Заменится динамически -->
+      <h2>EXCLUSIVE VIDEOS!</h2>
+      <h3>Registration without e-mail confirmation</h3>
     </div>
+
     <div class="video-block">
       <div id="video">
         <!-- Видеоблок -->
       </div>
     </div>
+
     <div class="btn_block">
-      <a id="cta-button" href="#" class="cta">114,059 PORN VIDEOS FOR FREE!</a> <!-- Ссылка и текст будут заменены -->
+      <a id="cta-button" href="https://example.com/desktop" class="cta">
+        WATCH FOR FREE!
+      </a>
     </div>
   </div>
 </body>
