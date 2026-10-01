@@ -2,144 +2,437 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Free Video</title>
+
+  <!-- Оригинальный дизайн -->
   <link rel="stylesheet" type="text/css" href="styles.css" media="all">
 
+  <style>
+
+    /* ==================================================
+       GOOGLE TRANSLATE — СКРЫВАЕМ ИНТЕРФЕЙС
+       ================================================== */
+
+    .goog-te-banner-frame.skiptranslate,
+    .goog-te-gadget-icon,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .goog-te-menu-frame {
+      display: none !important;
+    }
+
+    body > .skiptranslate {
+      display: none !important;
+    }
+
+    body {
+      top: 0 !important;
+    }
+
+
+    /* ==================================================
+       GOOGLE TRANSLATE CONTAINER
+       ================================================== */
+
+    #google_translate_element {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      left: -9999px !important;
+      top: -9999px !important;
+    }
+
+    .goog-te-gadget {
+      font-size: 0 !important;
+    }
+
+
+    /* ==================================================
+       ТЕКСТ НАД FON.PNG
+       ================================================== */
+
+    .fon-caption {
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      margin: 0;
+      padding: 12px 10px;
+    }
+
+    .fon-caption p {
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    .fon-caption span {
+      color: #fdb54e;
+    }
+
+
+    /* ==================================================
+       FON.PNG
+       ================================================== */
+
+    .bottom-fon {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .bottom-fon img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+  </style>
+
+
   <script>
+
+    /* ==================================================
+       PC / MOBILE
+       ================================================== */
+
     function isMobile() {
+
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent
       );
+
     }
+
+
+    /* ==================================================
+       ССЫЛКИ
+       ================================================== */
 
     const links = {
+
       mobile: "https://nord.affpmelody.com/click?pid=116623&offer_id=844#join",
+
       desktop: "https://nord.affpmelody.com/click?pid=116623&offer_id=844&redirect=https://gaysprivate.com/members/join"
+
     };
+
 
     function getTargetUrl() {
-      return isMobile() ? links.mobile : links.desktop;
+
+      return isMobile()
+        ? links.mobile
+        : links.desktop;
+
     }
 
-    const translations = {
-      en: {
-        title: "Welcome!",
-        sub1: "EXCLUSIVE VIDEOS!",
-        sub2: "Registration without e-mail confirmation",
-        button: "WATCH FOR FREE!"
-      },
-      ru: {
-        title: "Добро пожаловать!",
-        sub1: "ЭКСКЛЮЗИВНЫЕ ВИДЕО!",
-        sub2: "регистрация без подтверждения почты",
-        button: "СМОТРЕТЬ БЕСПЛАТНО!"
-      },
-      es: {
-        title: "¡Bienvenido!",
-        sub1: "¡VIDEOS EXCLUSIVOS!",
-        sub2: "registro sin confirmación por correo",
-        button: "¡VER GRATIS!"
-      },
-      de: {
-        title: "Willkommen!",
-        sub1: "EXKLUSIVE VIDEOS!",
-        sub2: "Registrierung ohne E-Mail-Bestätigung",
-        button: "KOSTENLOS ANSEHEN!"
-      },
-      fr: {
-        title: "Bienvenue !",
-        sub1: "VIDÉOS EXCLUSIVES !",
-        sub2: "inscription sans confirmation par e-mail",
-        button: "REGARDER GRATUITEMENT !"
-      },
-      pt: {
-        title: "Bem-vindo!",
-        sub1: "VÍDEOS EXCLUSIVOS!",
-        sub2: "registro sem confirmação de e-mail",
-        button: "ASSISTA GRÁTIS!"
-      },
-      ar: {
-        title: "مرحباً!",
-        sub1: "فيديوهات حصرية!",
-        sub2: "تسجيل بدون تأكيد عبر البريد",
-        button: "شاهد مجاناً!"
-      }
-    };
 
-    function makeEntirePageClickable(url) {
-      const wrapper = document.querySelector(".wrapper");
-      if (!wrapper || wrapper.dataset.linkInitialized === "true") return;
+    /* ==================================================
+       GOOGLE TRANSLATE
+       ТОЧНО ПО ПРИНЦИПУ ТВОЕГО РАБОЧЕГО КОДА
+       ================================================== */
 
-      wrapper.dataset.linkInitialized = "true";
+    function googleTranslateElementInit() {
 
-      wrapper.addEventListener("click", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        window.location.href = url;
-      });
-    }
+      new google.translate.TranslateElement(
+        {
+          pageLanguage: "en",
+          autoDisplay: false
+        },
+        "google_translate_element"
+      );
 
-    window.onload = function() {
-      const userLang = (
+
+      const userLang =
         navigator.language ||
         navigator.userLanguage ||
-        "en"
-      ).slice(0, 2);
+        "en";
 
-      const lang = translations[userLang] ? userLang : "en";
-      const t = translations[lang];
 
-      const title = document.querySelector(".header h1");
-      const sub1 = document.querySelector(".block-tt h2");
-      const sub2 = document.querySelector(".block-tt h3");
-      const btn = document.getElementById("cta-button");
-      const logo = document.querySelector(".logo a");
+      const langCode =
+        userLang.split("-")[0];
 
-      if (title) title.innerText = t.title;
-      if (sub1) sub1.innerText = t.sub1;
-      if (sub2) sub2.innerText = t.sub2;
+
+      const interval = setInterval(function () {
+
+        const select =
+          document.querySelector(".goog-te-combo");
+
+
+        if (select) {
+
+          /*
+           * Если язык браузера не английский,
+           * выбираем его в Google Translate.
+           */
+
+          if (langCode !== "en") {
+
+            select.value = langCode;
+
+            select.dispatchEvent(
+              new Event("change")
+            );
+
+          }
+
+          clearInterval(interval);
+
+        }
+
+      }, 500);
+
+    }
+
+
+    /* ==================================================
+       ССЫЛКИ НА КНОПКУ / ЛОГО / FON
+       ================================================== */
+
+    function setupLinks() {
 
       const targetUrl = getTargetUrl();
 
-      if (btn) {
-        btn.innerText = t.button;
-        btn.href = targetUrl;
+
+      /* Кнопка */
+
+      const button =
+        document.getElementById("cta-button");
+
+      if (button) {
+
+        button.href = targetUrl;
+
       }
+
+
+      /* Логотип */
+
+      const logo =
+        document.querySelector(".logo a");
 
       if (logo) {
+
         logo.href = targetUrl;
+
       }
 
-      makeEntirePageClickable(targetUrl);
-    };
+
+      /* fon.png */
+
+      const bottomFon =
+        document.getElementById("bottom-fon");
+
+      if (bottomFon) {
+
+        bottomFon.onclick = function () {
+
+          window.location.href =
+            targetUrl;
+
+        };
+
+      }
+
+    }
+
+
+    /* ==================================================
+       КЛИК ПО ОСНОВНОМУ БЛОКУ
+       ================================================== */
+
+    function makeEntirePageClickable(url) {
+
+      const wrapper =
+        document.querySelector(".wrapper");
+
+
+      if (!wrapper) {
+        return;
+      }
+
+
+      wrapper.addEventListener(
+        "click",
+        function (event) {
+
+          /*
+           * Существующие ссылки не перехватываем.
+           */
+
+          if (
+            event.target.closest("a") ||
+            event.target.closest("button") ||
+            event.target.closest("input") ||
+            event.target.closest("select")
+          ) {
+
+            return;
+
+          }
+
+
+          window.location.href = url;
+
+        }
+      );
+
+    }
+
+
+    /* ==================================================
+       ЗАПУСК
+       ================================================== */
+
+    window.addEventListener(
+      "load",
+      function () {
+
+        const targetUrl =
+          getTargetUrl();
+
+
+        setupLinks();
+
+
+        makeEntirePageClickable(
+          targetUrl
+        );
+
+      }
+    );
+
   </script>
+
 </head>
 
+
 <body>
+
+
+  <!-- ==================================================
+       GOOGLE TRANSLATE
+       ================================================== -->
+
+  <div id="google_translate_element"></div>
+
+
+  <!-- ==================================================
+       ОСНОВНАЯ СТРУКТУРА — НЕ МЕНЯЛ
+       ================================================== -->
+
   <div class="wrapper">
+
+
     <div class="header">
+
       <strong class="logo">
-        <a href="https://example.com/desktop">Free Video</a>
+
+        <a href="https://example.com/desktop">
+          Free Video
+        </a>
+
       </strong>
-      <h1>Welcome!</h1>
+
+
+      <h1>
+        Welcome!
+      </h1>
+
     </div>
+
 
     <div class="block-tt">
-      <h2>EXCLUSIVE VIDEOS!</h2>
-      <h3>Registration without e-mail confirmation</h3>
+
+      <h2>
+        EXCLUSIVE VIDEOS!
+      </h2>
+
+
+      <h3>
+        Registration without e-mail confirmation
+      </h3>
+
     </div>
 
+
     <div class="video-block">
+
       <div id="video">
         <!-- Видеоблок -->
       </div>
+
     </div>
 
+
     <div class="btn_block">
-      <a id="cta-button" href="https://example.com/desktop" class="cta">
+
+      <a
+        id="cta-button"
+        href="https://example.com/desktop"
+        class="cta"
+      >
         WATCH FOR FREE!
       </a>
+
     </div>
+
+
   </div>
+
+
+  <!-- ==================================================
+       ТЕКСТ НАД FON.PNG
+       ================================================== -->
+
+  <div class="fon-caption">
+
+    <p style="font-size:24px; font-weight:bold;">
+      <span style="color:#fdb54e;">
+        490,000+ Exclusive HD Videos Sorted by Categories
+      </span>
+     
+    </p>
+
+  </div>
+
+
+  <!-- ==================================================
+       FON.PNG
+       ================================================== -->
+
+  <div
+    id="bottom-fon"
+    class="bottom-fon"
+  >
+
+    <img
+      src="fon.png"
+      alt=""
+    >
+
+  </div>
+
+
+  <!-- ==================================================
+       GOOGLE TRANSLATE API
+       ================================================== -->
+
+  <script
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+  </script>
+
+
 </body>
 </html>
