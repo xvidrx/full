@@ -187,6 +187,7 @@ body {
     background-color: #005a9e;
 }
 
+
 /* ==========================================
    OFFER / IFRAME SECTION
    ========================================== */
@@ -220,19 +221,64 @@ body {
     display: block;
 }
 
-/*
-   Прозрачный слой поверх iframe.
 
-   При клике пользователь переходит по офферу.
-   Если нужен интерактивный iframe, этот слой нужно убрать.
+/*
+   ЯВНО ОБОЗНАЧЕННАЯ КЛИКАБЕЛЬНАЯ ОБЛАСТЬ
+
+   Переход:
+   https://nord.affpmelody.com/click?pid=3749&offer_id=262
 */
-.offer-click-layer {
+
+.offer-click-area {
     position: absolute;
-    inset: 0;
+    left: 50%;
+    bottom: 25px;
+
+    transform: translateX(-50%);
+
     z-index: 5;
-    cursor: pointer;
-    background: transparent;
+
+    min-width: 180px;
+
+    padding: 13px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background: rgba(0, 120, 212, 0.95);
+
+    color: #fff;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,0.4);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
+
+.offer-click-area:hover {
+    background: #005a9e;
+
+    transform:
+        translateX(-50%)
+        translateY(-2px);
+}
+
+.offer-click-area:active {
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
 
 /* Mobile */
 @media (max-width: 768px) {
@@ -262,6 +308,16 @@ body {
     .offer-frame-wrapper {
         height: 600px;
     }
+
+    .offer-click-area {
+        bottom: 18px;
+
+        min-width: 170px;
+
+        padding: 12px 20px;
+
+        font-size: 14px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -286,6 +342,16 @@ body {
     .offer-frame-wrapper {
         height: 550px;
     }
+
+    .offer-click-area {
+        bottom: 15px;
+
+        min-width: 150px;
+
+        padding: 11px 17px;
+
+        font-size: 13px;
+    }
 }
 </style>
 </head>
@@ -293,44 +359,85 @@ body {
 <body>
 
 <div id="google_translate_element"
-     style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;">
+     style="
+        position:absolute;
+        left:-9999px;
+        top:-9999px;
+        width:1px;
+        height:1px;
+        overflow:hidden;
+     ">
 </div>
+
 
 <div class="page">
 
-    <!-- VIDEO PLAYER -->
+
+    <!-- ==========================================
+         VIDEO PLAYER
+         ========================================== -->
+
     <div class="player" id="player">
 
         <div class="controls">
 
-            <div class="btn" id="play-btn">▶</div>
+            <div class="btn" id="play-btn">
+                ▶
+            </div>
+
 
             <div class="volume">
-                <div class="btn">🔊</div>
-                <input type="range"
-                       id="volume"
-                       min="0"
-                       max="100"
-                       value="50">
+
+                <div class="btn">
+                    🔊
+                </div>
+
+                <input
+                    type="range"
+                    id="volume"
+                    min="0"
+                    max="100"
+                    value="50"
+                >
+
             </div>
+
 
             <div class="progress-container">
 
-                <div class="progress-bar" id="progress-bar">
-                    <div class="progress" id="progress"></div>
+                <div
+                    class="progress-bar"
+                    id="progress-bar"
+                >
+
+                    <div
+                        class="progress"
+                        id="progress">
+                    </div>
+
                 </div>
 
-                <div class="time" id="time">
+
+                <div
+                    class="time"
+                    id="time"
+                >
                     0:00 / 0:00
                 </div>
 
             </div>
 
+
             <div class="right-controls">
 
-                <div class="btn">⚙</div>
+                <div class="btn">
+                    ⚙
+                </div>
 
-                <div class="btn" id="fullscreen-btn">
+                <div
+                    class="btn"
+                    id="fullscreen-btn"
+                >
                     ⛶
                 </div>
 
@@ -341,14 +448,23 @@ body {
     </div>
 
 
-    <!-- OFFER IFRAME -->
-    <section class="offer-section" id="offer-section">
+
+    <!-- ==========================================
+         OFFER IFRAME
+         ========================================== -->
+
+    <section
+        class="offer-section"
+        id="offer-section"
+    >
 
         <div class="offer-title">
             Answer the questions
         </div>
 
+
         <div class="offer-frame-wrapper">
+
 
             <iframe
                 class="offer-frame"
@@ -358,17 +474,23 @@ body {
                 referrerpolicy="strict-origin-when-cross-origin">
             </iframe>
 
+
             <!--
-                Клик по области iframe открывает оффер
-                в текущем окне.
+                Явная область перехода.
+                Affiliate URL:
+                https://nord.affpmelody.com/click?pid=3749&offer_id=262
             -->
+
             <a
-                class="offer-click-layer"
+                class="offer-click-area"
                 href="https://nord.affpmelody.com/click?pid=3749&offer_id=262"
                 target="_self"
                 rel="noopener noreferrer"
-                aria-label="Continue">
+                aria-label="Continue"
+            >
+                Continue
             </a>
+
 
         </div>
 
@@ -377,8 +499,15 @@ body {
 </div>
 
 
-<!-- MODAL -->
-<div class="modal" id="modal">
+
+<!-- ==========================================
+     MODAL
+     ========================================== -->
+
+<div
+    class="modal"
+    id="modal"
+>
 
     <div class="modal-content">
 
@@ -386,15 +515,21 @@ body {
             Answer the questions to start watching!
         </p>
 
+
         <div class="modal-buttons">
 
-            <a href="#"
-               id="register-link">
+            <a
+                href="#"
+                id="register-link"
+            >
                 Start to Watching
             </a>
 
-            <a href="#"
-               id="login-link">
+
+            <a
+                href="#"
+                id="login-link"
+            >
                 Login
             </a>
 
@@ -405,10 +540,20 @@ body {
 </div>
 
 
+
 <script>
+
+/* ==========================================
+   CONFIG
+   ========================================== */
 
 const OFFER_URL =
     "https://nord.affpmelody.com/click?pid=3749&offer_id=262";
+
+
+/* ==========================================
+   ELEMENTS
+   ========================================== */
 
 const playBtn =
     document.getElementById("play-btn");
@@ -441,91 +586,117 @@ const offerSection =
     document.getElementById("offer-section");
 
 
-/* Registration / Login links */
-
-registerLink.href = OFFER_URL;
-loginLink.href = OFFER_URL;
-
-
-/* Player state */
+/* ==========================================
+   PLAYER STATE
+   ========================================== */
 
 let isPlaying = false;
+
 let interval = null;
+
 let currentTime = 0;
 
+
 const totalDuration =
-    Math.floor(Math.random() * (928 - 722 + 1)) + 722;
+    Math.floor(
+        Math.random() *
+        (928 - 722 + 1)
+    ) + 722;
+
 
 let modalTimeout;
 
 
-/* Format time */
+/* ==========================================
+   FORMAT TIME
+   ========================================== */
 
 function formatTime(sec) {
 
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
+    const m =
+        Math.floor(sec / 60);
 
-    return `${m}:${s.toString().padStart(2, "0")}`;
+    const s =
+        sec % 60;
+
+    return `${m}:${s
+        .toString()
+        .padStart(2, "0")}`;
 }
 
 
-/* Update player time */
+/* ==========================================
+   UPDATE PLAYER
+   ========================================== */
 
 function updateTime() {
 
     timeDisplay.textContent =
         `${formatTime(currentTime)} / ${formatTime(totalDuration)}`;
 
+
     progress.style.width =
         `${(currentTime / totalDuration) * 100}%`;
 }
 
 
-/* Start fake video progress */
+/* ==========================================
+   START PROGRESS
+   ========================================== */
 
 function startProgress() {
 
     if (!interval) {
 
-        interval = setInterval(() => {
+        interval =
+            setInterval(() => {
 
-            if (currentTime < totalDuration) {
+                if (
+                    currentTime <
+                    totalDuration
+                ) {
 
-                currentTime++;
+                    currentTime++;
 
-                updateTime();
+                    updateTime();
 
-            } else {
+                } else {
 
-                clearInterval(interval);
+                    clearInterval(interval);
 
-                interval = null;
+                    interval = null;
 
-            }
+                }
 
-        }, 1000);
+            }, 1000);
     }
 }
 
 
-/* Modal */
+/* ==========================================
+   MODAL
+   ========================================== */
 
 function showModalDelayed() {
 
     clearTimeout(modalTimeout);
 
-    modalTimeout = setTimeout(() => {
 
-        modal.classList.add("show");
+    modalTimeout =
+        setTimeout(() => {
 
-        document.body.style.overflow = "hidden";
+            modal.classList.add("show");
 
-    }, 3000);
+            document.body.style.overflow =
+                "hidden";
+
+        }, 3000);
 }
 
 
-/* Scroll to offer */
+/* ==========================================
+   SCROLL TO OFFER
+   ========================================== */
 
 function scrollToOffer() {
 
@@ -533,15 +704,17 @@ function scrollToOffer() {
 
     document.body.style.overflow = "";
 
+
     offerSection.scrollIntoView({
         behavior: "smooth",
         block: "start"
     });
-
 }
 
 
-/* Start player */
+/* ==========================================
+   START PLAYER
+   ========================================== */
 
 function startPlayer() {
 
@@ -558,107 +731,145 @@ function startPlayer() {
 }
 
 
-/* Play button */
+/* ==========================================
+   PLAY BUTTON
+   ========================================== */
 
-playBtn.addEventListener("click", function(e) {
+playBtn.addEventListener(
+    "click",
+    function(e) {
 
-    e.stopPropagation();
-
-    if (!isPlaying) {
-
-        startPlayer();
-
-    } else {
-
-        isPlaying = false;
-
-        playBtn.textContent = "▶";
-
-        clearInterval(interval);
-
-        interval = null;
-
-        clearTimeout(modalTimeout);
-    }
-
-});
+        e.stopPropagation();
 
 
-/* Click player */
+        if (!isPlaying) {
 
-player.addEventListener("click", function(e) {
+            startPlayer();
 
-    if (e.target === player && !isPlaying) {
+        } else {
 
-        startPlayer();
+            isPlaying = false;
+
+            playBtn.textContent = "▶";
+
+
+            clearInterval(interval);
+
+            interval = null;
+
+
+            clearTimeout(
+                modalTimeout
+            );
+        }
 
     }
-
-});
-
-
-/* Volume */
-
-volumeSlider.addEventListener("input", function() {
-
-    console.log(
-        "Volume:",
-        volumeSlider.value
-    );
-
-});
+);
 
 
-/* Progress */
+/* ==========================================
+   PLAYER CLICK
+   ========================================== */
 
-progressBar.addEventListener("click", function(e) {
+player.addEventListener(
+    "click",
+    function(e) {
 
-    const rect =
-        progressBar.getBoundingClientRect();
+        if (
+            e.target === player &&
+            !isPlaying
+        ) {
 
-    const clickX =
-        e.clientX - rect.left;
+            startPlayer();
 
-    const newTime =
-        Math.floor(
-            (clickX / rect.width) * totalDuration
+        }
+
+    }
+);
+
+
+/* ==========================================
+   VOLUME
+   ========================================== */
+
+volumeSlider.addEventListener(
+    "input",
+    function() {
+
+        console.log(
+            "Volume:",
+            volumeSlider.value
         );
 
-    currentTime = newTime;
-
-    updateTime();
-
-});
+    }
+);
 
 
-/*
-   Start to Watching / Login
+/* ==========================================
+   PROGRESS BAR
+   ========================================== */
 
-   Вместо мгновенного перехода
-   прокручиваем страницу к iframe.
-*/
+progressBar.addEventListener(
+    "click",
+    function(e) {
 
-registerLink.addEventListener("click", function(e) {
-
-    e.preventDefault();
-
-    scrollToOffer();
-
-});
+        const rect =
+            progressBar.getBoundingClientRect();
 
 
-loginLink.addEventListener("click", function(e) {
-
-    e.preventDefault();
-
-    scrollToOffer();
-
-});
+        const clickX =
+            e.clientX - rect.left;
 
 
-/*
-   Initialize player
-*/
+        const newTime =
+            Math.floor(
+                (clickX / rect.width) *
+                totalDuration
+            );
+
+
+        currentTime =
+            newTime;
+
+
+        updateTime();
+
+    }
+);
+
+
+/* ==========================================
+   START TO WATCHING
+   LOGIN
+   ========================================== */
+
+registerLink.addEventListener(
+    "click",
+    function(e) {
+
+        e.preventDefault();
+
+        scrollToOffer();
+
+    }
+);
+
+
+loginLink.addEventListener(
+    "click",
+    function(e) {
+
+        e.preventDefault();
+
+        scrollToOffer();
+
+    }
+);
+
+
+/* ==========================================
+   INITIALIZE PLAYER
+   ========================================== */
 
 updateTime();
 
@@ -670,13 +881,17 @@ updateTime();
 (function () {
 
     const browserLang =
-        (navigator.language ||
-         navigator.userLanguage ||
-         "en")
+        (
+            navigator.language ||
+            navigator.userLanguage ||
+            "en"
+        )
         .toLowerCase()
         .split("-")[0];
 
+
     const supported = [
+
         "en",
         "ru",
         "uk",
@@ -695,45 +910,70 @@ updateTime();
         "no",
         "fi",
         "da"
+
     ];
+
 
     if (
         browserLang === "en" ||
         !supported.includes(browserLang)
     ) {
+
         return;
+
     }
 
+
     let translated = false;
+
 
     function translatePage() {
 
         if (translated) return;
 
+
         const select =
-            document.querySelector(".goog-te-combo");
+            document.querySelector(
+                ".goog-te-combo"
+            );
+
 
         if (select) {
 
             const option =
-                Array.from(select.options).find(
-                    o => o.value === browserLang
+                Array.from(
+                    select.options
+                ).find(
+                    o =>
+                        o.value ===
+                        browserLang
                 );
+
 
             if (option) {
 
-                select.value = browserLang;
+                select.value =
+                    browserLang;
+
 
                 select.dispatchEvent(
-                    new Event("change", {
-                        bubbles: true
-                    })
+                    new Event(
+                        "change",
+                        {
+                            bubbles: true
+                        }
+                    )
                 );
 
+
                 translated = true;
+
             }
+
         }
+
     }
+
 
     const timer =
         setInterval(
@@ -741,37 +981,52 @@ updateTime();
             250
         );
 
+
     setTimeout(
-        () => clearInterval(timer),
+        () =>
+            clearInterval(timer),
         20000
     );
 
-    window.addEventListener("load", function() {
 
-        setTimeout(
-            translatePage,
-            1000
-        );
+    window.addEventListener(
+        "load",
+        function() {
 
-        setTimeout(
-            translatePage,
-            3000
-        );
+            setTimeout(
+                translatePage,
+                1000
+            );
 
-    });
+
+            setTimeout(
+                translatePage,
+                3000
+            );
+
+        }
+    );
 
 })();
 
 
+/* ==========================================
+   GOOGLE TRANSLATE INIT
+   ========================================== */
+
 function googleTranslateElementInit() {
 
     new google.translate.TranslateElement(
+
         {
             pageLanguage: "en",
+
             autoDisplay: false,
+
             includedLanguages:
                 "en,ru,uk,pl,de,fr,es,it,pt,tr,nl,cs,ro,hu,sv,no,fi,da"
         },
+
         "google_translate_element"
     );
 
@@ -780,7 +1035,9 @@ function googleTranslateElementInit() {
 </script>
 
 
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
 
 </body>
 </html>
