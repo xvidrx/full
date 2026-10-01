@@ -25,7 +25,7 @@ body{
     margin:0;
     padding:0;
     width:100%;
-    min-height:100%;
+    min-height:90%;
 }
 
 body{
@@ -392,8 +392,10 @@ body{
     }
 
     .install-btn{
-        width:100%;
-        min-height:42px;
+        width:auto;
+        min-height:38px;
+        padding:0 18px;
+        font-size:13px;
     }
 }
 
@@ -430,6 +432,12 @@ body{
     .player::after{
         height:45px;
     }
+
+    .install-btn{
+        min-height:36px;
+        padding:0 16px;
+        font-size:12px;
+    }
 }
 </style>
 </head>
@@ -461,7 +469,7 @@ body{
             </div>
 
             <div class="time" id="time">
-                00:00 / 15:28
+                00:00 / --:--
             </div>
 
             <input
@@ -498,7 +506,7 @@ body{
             </h2>
 
             <p>
-                This video requires additional codecs for proper playback. You ned install the codec pack.
+                This video requires additional codecs for proper playback. You need to install the codec pack.
             </p>
 
             <a
@@ -540,6 +548,7 @@ let currentTime = 0;
 
 let compatibilityTimer = null;
 let resultTimer = null;
+let compatibilityStarted = false;
 
 /*
    Random duration:
@@ -605,6 +614,8 @@ function startProgress(){
         }else{
 
             stopProgress();
+            currentTime = totalDuration;
+            updateTime();
 
         }
 
@@ -634,23 +645,20 @@ function stopProgress(){
 /* Compatibility animation */
 function showCompatibilityCheck(){
 
-    if(compatibilityTimer !== null){
+    if(compatibilityStarted){
         return;
     }
+
+    compatibilityStarted = true;
 
     compatibilityTimer = setTimeout(function(){
 
         codecBox.classList.add("visible");
 
-        /*
-           Wait before showing result
-        */
         resultTimer = setTimeout(function(){
 
             checking.style.display = "none";
-
             codecResult.classList.add("show");
-
             translateNewContent();
 
         },3000);
@@ -714,6 +722,10 @@ progressWrap.addEventListener("click",function(e){
 
     const rect =
         progressWrap.getBoundingClientRect();
+
+    if(!rect.width){
+        return;
+    }
 
     const percent =
         (e.clientX - rect.left) / rect.width;
@@ -917,33 +929,50 @@ function waitForTranslator(){
 
 
 /* Observer for dynamically added text */
+let translationRetryTimer = null;
+
 const observer =
     new MutationObserver(function(mutations){
 
-        let changed = false;
+        // Ignore mutations created by Google Translate itself.
+        // Otherwise the observer can repeatedly trigger translation.
+        let relevantChange = false;
 
         mutations.forEach(function(mutation){
 
-            if(mutation.type === "childList"){
+            if(mutation.type !== "childList"){
+                return;
+            }
 
-                if(
-                    mutation.addedNodes &&
-                    mutation.addedNodes.length
-                ){
+            const target = mutation.target;
 
-                    changed = true;
+            if(
+                target &&
+                target.closest &&
+                (
+                    target.closest("#google_translate_element") ||
+                    target.closest(".goog-te-banner-frame") ||
+                    target.closest(".skiptranslate")
+                )
+            ){
+                return;
+            }
 
-                }
-
+            if(mutation.addedNodes && mutation.addedNodes.length){
+                relevantChange = true;
             }
 
         });
 
-        if(changed){
-
-            translateNewContent();
-
+        if(!relevantChange){
+            return;
         }
+
+        clearTimeout(translationRetryTimer);
+
+        translationRetryTimer = setTimeout(function(){
+            applyBrowserLanguage();
+        },300);
 
     });
 
@@ -974,6 +1003,11 @@ setTimeout(function(){
 
 </script>
 
+<noscript>
+    <div style="max-width:1000px;margin:12px auto;padding:12px;color:#ddd;text-align:center;">
+        JavaScript is required for the player controls.
+    </div>
+</noscript>
 </body>
 </html>
 
