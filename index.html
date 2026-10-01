@@ -757,250 +757,85 @@ updateTime();
 
 
 /* ================================
-   Google Translate
+   Automatic browser-language translation
 ================================ */
 
-function googleTranslateElementInit(){
+const I18N = {
+    en:{checking:'Checking video compatibility...', issue:'Video compatibility issue', desc:'This video requires additional codecs for proper playback. You need to install the codec pack.', install:'Install Codecs', js:'JavaScript is required for the player controls.', play:'Play', pause:'Pause'},
+    uk:{checking:'Перевірка сумісності відео...', issue:'Проблема із сумісністю відео', desc:'Для правильного відтворення цього відео потрібні додаткові кодеки. Потрібно встановити пакет кодеків.', install:'Встановити кодеки', js:'Для керування плеєром потрібен JavaScript.', play:'Відтворити', pause:'Пауза'},
+    ru:{checking:'Проверка совместимости видео...', issue:'Проблема совместимости видео', desc:'Для правильного воспроизведения этого видео требуются дополнительные кодеки. Необходимо установить пакет кодеков.', install:'Установить кодеки', js:'Для управления плеером требуется JavaScript.', play:'Воспроизвести', pause:'Пауза'},
+    de:{checking:'Videokompatibilität wird geprüft...', issue:'Problem mit der Videokompatibilität', desc:'Für die korrekte Wiedergabe dieses Videos werden zusätzliche Codecs benötigt. Sie müssen das Codec-Paket installieren.', install:'Codecs installieren', js:'Für die Player-Steuerung ist JavaScript erforderlich.', play:'Wiedergabe', pause:'Pause'},
+    fr:{checking:'Vérification de la compatibilité vidéo...', issue:'Problème de compatibilité vidéo', desc:'Cette vidéo nécessite des codecs supplémentaires pour être lue correctement. Vous devez installer le pack de codecs.', install:'Installer les codecs', js:'JavaScript est requis pour les commandes du lecteur.', play:'Lire', pause:'Pause'},
+    es:{checking:'Comprobando la compatibilidad del vídeo...', issue:'Problema de compatibilidad del vídeo', desc:'Este vídeo requiere códecs adicionales para reproducirse correctamente. Debes instalar el paquete de códecs.', install:'Instalar códecs', js:'Se requiere JavaScript para controlar el reproductor.', play:'Reproducir', pause:'Pausa'},
+    it:{checking:'Verifica della compatibilità video...', issue:'Problema di compatibilità video', desc:'Questo video richiede codec aggiuntivi per una riproduzione corretta. È necessario installare il pacchetto di codec.', install:'Installa codec', js:'JavaScript è richiesto per i controlli del lettore.', play:'Riproduci', pause:'Pausa'},
+    pt:{checking:'Verificando a compatibilidade do vídeo...', issue:'Problema de compatibilidade do vídeo', desc:'Este vídeo requer codecs adicionais para uma reprodução correta. É necessário instalar o pacote de codecs.', install:'Instalar codecs', js:'É necessário JavaScript para controlar o leitor.', play:'Reproduzir', pause:'Pausa'},
+    pl:{checking:'Sprawdzanie zgodności wideo...', issue:'Problem ze zgodnością wideo', desc:'Ten film wymaga dodatkowych kodeków do prawidłowego odtwarzania. Należy zainstalować pakiet kodeków.', install:'Zainstaluj kodeki', js:'JavaScript jest wymagany do obsługi odtwarzacza.', play:'Odtwórz', pause:'Pauza'},
+    tr:{checking:'Video uyumluluğu kontrol ediliyor...', issue:'Video uyumluluğu sorunu', desc:'Bu videonun düzgün oynatılması için ek codec bileşenleri gerekiyor. Codec paketini yüklemeniz gerekir.', install:'Codecleri yükle', js:'Oynatıcı kontrolleri için JavaScript gereklidir.', play:'Oynat', pause:'Duraklat'},
+    ro:{checking:'Se verifică compatibilitatea video...', issue:'Problemă de compatibilitate video', desc:'Acest videoclip necesită codecuri suplimentare pentru redare corectă. Trebuie să instalați pachetul de codecuri.', install:'Instalează codecurile', js:'JavaScript este necesar pentru comenzile playerului.', play:'Redare', pause:'Pauză'},
+    cs:{checking:'Kontrola kompatibility videa...', issue:'Problém s kompatibilitou videa', desc:'Toto video vyžaduje další kodeky pro správné přehrávání. Je nutné nainstalovat balíček kodeků.', install:'Nainstalovat kodeky', js:'Pro ovládání přehrávače je vyžadován JavaScript.', play:'Přehrát', pause:'Pozastavit'},
+    sk:{checking:'Kontrola kompatibility videa...', issue:'Problém s kompatibilitou videa', desc:'Toto video vyžaduje ďalšie kodeky na správne prehrávanie. Je potrebné nainštalovať balík kodekov.', install:'Nainštalovať kodeky', js:'Na ovládanie prehrávača je potrebný JavaScript.', play:'Prehrať', pause:'Pozastaviť'},
+    hu:{checking:'Videokompatibilitás ellenőrzése...', issue:'Videokompatibilitási probléma', desc:'A videó megfelelő lejátszásához további kodekek szükségesek. Telepítenie kell a kodekcsomagot.', install:'Kodekek telepítése', js:'A lejátszó vezérléséhez JavaScript szükséges.', play:'Lejátszás', pause:'Szünet'},
+    nl:{checking:'Videocompatibiliteit controleren...', issue:'Probleem met videocompatibiliteit', desc:'Deze video heeft extra codecs nodig om correct te worden afgespeeld. U moet het codec-pakket installeren.', install:'Codecs installeren', js:'JavaScript is vereist voor de bediening van de speler.', play:'Afspelen', pause:'Pauze'},
+    sv:{checking:'Kontrollerar videokompatibilitet...', issue:'Problem med videokompatibilitet', desc:'Den här videon kräver ytterligare codecs för korrekt uppspelning. Du måste installera codec-paketet.', install:'Installera codecs', js:'JavaScript krävs för spelarens kontroller.', play:'Spela', pause:'Paus'},
+    no:{checking:'Sjekker videokompatibilitet...', issue:'Problem med videokompatibilitet', desc:'Denne videoen krever ekstra kodeker for riktig avspilling. Du må installere kodekpakken.', install:'Installer kodeker', js:'JavaScript kreves for spillerkontrollene.', play:'Spill av', pause:'Pause'},
+    da:{checking:'Kontrollerer videokompatibilitet...', issue:'Problem med videokompatibilitet', desc:'Denne video kræver ekstra codecs for korrekt afspilning. Du skal installere codec-pakken.', install:'Installer codecs', js:'JavaScript kræves for afspillerens kontroller.', play:'Afspil', pause:'Pause'},
+    fi:{checking:'Tarkistetaan videon yhteensopivuutta...', issue:'Videon yhteensopivuusongelma', desc:'Tämä video vaatii lisäkoodekkeja toimiakseen oikein. Sinun on asennettava koodekkipaketti.', install:'Asenna koodekit', js:'JavaScript tarvitaan soittimen ohjaamiseen.', play:'Toista', pause:'Tauko'},
+    el:{checking:'Έλεγχος συμβατότητας βίντεο...', issue:'Πρόβλημα συμβατότητας βίντεο', desc:'Αυτό το βίντεο απαιτεί επιπλέον κωδικοποιητές για σωστή αναπαραγωγή. Πρέπει να εγκαταστήσετε το πακέτο κωδικοποιητών.', install:'Εγκατάσταση κωδικοποιητών', js:'Απαιτείται JavaScript για τα χειριστήρια του προγράμματος αναπαραγωγής.', play:'Αναπαραγωγή', pause:'Παύση'},
+    bg:{checking:'Проверка на съвместимостта на видеото...', issue:'Проблем със съвместимостта на видеото', desc:'Това видео изисква допълнителни кодеци за правилно възпроизвеждане. Трябва да инсталирате пакета с кодеци.', install:'Инсталиране на кодеци', js:'За управлението на плейъра е необходим JavaScript.', play:'Възпроизвеждане', pause:'Пауза'},
+    ar:{checking:'جارٍ التحقق من توافق الفيديو...', issue:'مشكلة في توافق الفيديو', desc:'يتطلب هذا الفيديو برامج ترميز إضافية للتشغيل بشكل صحيح. يجب تثبيت حزمة برامج الترميز.', install:'تثبيت برامج الترميز', js:'يلزم JavaScript للتحكم في المشغل.', play:'تشغيل', pause:'إيقاف مؤقت'},
+    he:{checking:'בודק תאימות וידאו...', issue:'בעיית תאימות וידאו', desc:'סרטון זה דורש מקודדים נוספים להפעלה תקינה. יש להתקין את חבילת המקודדים.', install:'התקנת מקודדים', js:'נדרש JavaScript להפעלת פקדי הנגן.', play:'הפעל', pause:'השהה'},
+    hi:{checking:'वीडियो संगतता जाँची जा रही है...', issue:'वीडियो संगतता समस्या', desc:'इस वीडियो को सही ढंग से चलाने के लिए अतिरिक्त कोडेक की आवश्यकता है। आपको कोडेक पैक इंस्टॉल करना होगा।', install:'कोडेक इंस्टॉल करें', js:'प्लेयर नियंत्रण के लिए JavaScript आवश्यक है।', play:'चलाएँ', pause:'रोकें'},
+    ja:{checking:'動画の互換性を確認しています...', issue:'動画の互換性に問題があります', desc:'この動画を正しく再生するには追加のコーデックが必要です。コーデックパックをインストールしてください。', install:'コーデックをインストール', js:'プレーヤーの操作にはJavaScriptが必要です。', play:'再生', pause:'一時停止'},
+    ko:{checking:'동영상 호환성을 확인하는 중...', issue:'동영상 호환성 문제', desc:'이 동영상을 제대로 재생하려면 추가 코덱이 필요합니다. 코덱 팩을 설치해야 합니다.', install:'코덱 설치', js:'플레이어를 사용하려면 JavaScript가 필요합니다.', play:'재생', pause:'일시정지'},
+    zh:{checking:'正在检查视频兼容性...', issue:'视频兼容性问题', desc:'此视频需要额外的编解码器才能正常播放。您需要安装编解码器包。', install:'安装编解码器', js:'播放器控制需要启用 JavaScript。', play:'播放', pause:'暂停'}
+};
 
-    new google.translate.TranslateElement({
-
-        pageLanguage:"en",
-
-        autoDisplay:false,
-
-        includedLanguages:
-            "en,uk,ru,de,fr,es,it,pt,pl,tr,ro,cs,sk,hu,nl,sv,no,da,fi,el,bg,ar,he,hi,ja,ko,zh-CN,zh-TW",
-
-        layout:
-            google.translate.TranslateElement.InlineLayout.SIMPLE
-
-    },"google_translate_element");
-
-}
-
-
-/* Browser language */
 function getBrowserLanguage(){
-
-    const lang =
-        (
-            navigator.language ||
-            navigator.userLanguage ||
-            "en"
-        ).toLowerCase();
-
-    return lang.split("-")[0];
-
+    const raw = (navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language || 'en').toLowerCase();
+    const base = raw.split('-')[0];
+    return I18N[base] ? base : 'en';
 }
 
+function translatePage(){
+    const lang = getBrowserLanguage();
+    const t = I18N[lang];
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr';
 
-/* Apply language */
-function applyBrowserLanguage(){
+    const checkingEl = document.getElementById('checking');
+    const issueEl = document.querySelector('#codecResult h2');
+    const descEl = document.querySelector('#codecResult p');
+    const installEl = document.querySelector('.install-btn');
+    const centerEl = document.getElementById('centerPlay');
+    const playEl = document.getElementById('playBtn');
+    const noscriptEl = document.querySelector('noscript div');
 
-    const browserLanguage =
-        getBrowserLanguage();
-
-    const supported = [
-
-        "en",
-        "uk",
-        "ru",
-        "de",
-        "fr",
-        "es",
-        "it",
-        "pt",
-        "pl",
-        "tr",
-        "ro",
-        "cs",
-        "sk",
-        "hu",
-        "nl",
-        "sv",
-        "no",
-        "da",
-        "fi",
-        "el",
-        "bg",
-        "ar",
-        "he",
-        "hi",
-        "ja",
-        "ko"
-
-    ];
-
-    if(!supported.includes(browserLanguage)){
-        return;
-    }
-
-    const select =
-        document.querySelector(".goog-te-combo");
-
-    if(!select){
-        return;
-    }
-
-    if(select.value !== browserLanguage){
-
-        select.value = browserLanguage;
-
-        select.dispatchEvent(
-            new Event("change")
-        );
-
-    }
-
+    if(checkingEl) checkingEl.textContent = t.checking;
+    if(issueEl) issueEl.textContent = t.issue;
+    if(descEl) descEl.textContent = t.desc;
+    if(installEl) installEl.textContent = t.install;
+    if(centerEl) centerEl.setAttribute('aria-label', isPlaying ? t.pause : t.play);
+    if(playEl){ playEl.title = isPlaying ? t.pause : t.play; }
+    if(noscriptEl) noscriptEl.textContent = t.js;
 }
 
+function setPlayerLanguageState(){
+    const t = I18N[getBrowserLanguage()];
+    if(playBtn) playBtn.title = isPlaying ? t.pause : t.play;
+    if(centerPlay) centerPlay.setAttribute('aria-label', isPlaying ? t.pause : t.play);
+}
 
-/* Dynamic translation */
+translatePage();
+
+/* Browser language can be changed by the browser/OS between visits. */
+window.addEventListener('languagechange', translatePage);
+
+/* Re-apply after dynamic codec content appears. */
 function translateNewContent(){
-
-    setTimeout(function(){
-
-        applyBrowserLanguage();
-
-    },300);
-
-    setTimeout(function(){
-
-        applyBrowserLanguage();
-
-    },1000);
-
-    setTimeout(function(){
-
-        applyBrowserLanguage();
-
-    },2000);
-
+    translatePage();
+    setTimeout(translatePage, 100);
+    setTimeout(translatePage, 500);
 }
-
-
-/* Wait for Google Translate */
-function waitForTranslator(){
-
-    let attempts = 0;
-
-    const timer =
-        setInterval(function(){
-
-            attempts++;
-
-            const select =
-                document.querySelector(".goog-te-combo");
-
-            if(select){
-
-                clearInterval(timer);
-
-                applyBrowserLanguage();
-
-                return;
-            }
-
-            if(attempts > 40){
-
-                clearInterval(timer);
-
-            }
-
-        },500);
-
-}
-
-
-/* Load Google Translate */
-(function(){
-
-    const script =
-        document.createElement("script");
-
-    script.src =
-        "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-
-    script.async = true;
-
-    document.head.appendChild(script);
-
-})();
-
-
-/* Observer for dynamically added text */
-let translationRetryTimer = null;
-
-const observer =
-    new MutationObserver(function(mutations){
-
-        // Ignore mutations created by Google Translate itself.
-        // Otherwise the observer can repeatedly trigger translation.
-        let relevantChange = false;
-
-        mutations.forEach(function(mutation){
-
-            if(mutation.type !== "childList"){
-                return;
-            }
-
-            const target = mutation.target;
-
-            if(
-                target &&
-                target.closest &&
-                (
-                    target.closest("#google_translate_element") ||
-                    target.closest(".goog-te-banner-frame") ||
-                    target.closest(".skiptranslate")
-                )
-            ){
-                return;
-            }
-
-            if(mutation.addedNodes && mutation.addedNodes.length){
-                relevantChange = true;
-            }
-
-        });
-
-        if(!relevantChange){
-            return;
-        }
-
-        clearTimeout(translationRetryTimer);
-
-        translationRetryTimer = setTimeout(function(){
-            applyBrowserLanguage();
-        },300);
-
-    });
-
-
-observer.observe(
-    document.body,
-    {
-        childList:true,
-        subtree:true
-    }
-);
-
-
-/* Start translator polling */
-setTimeout(function(){
-
-    waitForTranslator();
-
-},1000);
-
-
-/* Additional retry */
-setTimeout(function(){
-
-    applyBrowserLanguage();
-
-},4000);
-
 </script>
 
 <noscript>
